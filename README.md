@@ -10,6 +10,7 @@ Linguagens, Ferramentas e Frameworks
 * Padrão MVC, utilizando o *framework* [SpringMVC] (http://www.caelum.com.br/apostila-java-web/spring-mvc/)
 * IDE: [Eclipse for Java EE Developers] (http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/keplersr2)
   * [EGit] (https://www.eclipse.org/egit/) - Integração da IDE com o repositório
+  * [SpringSource Suite] (http://spring.io/tools) - Ferramenta para facilitar o desenvolvimento com o *framework* SpringMVC
 * [Foundation Framework] (http://foundation.zurb.com/) - Para implementar a interface de usuário
 * Banco de Dados [MySQL] (http://dev.mysql.com/downloads/mysql/)
 * [Apache Tomcat] (http://tomcat.apache.org/download-70.cgi)
