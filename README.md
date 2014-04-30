@@ -13,7 +13,7 @@ Linguagens, Ferramentas e Frameworks
   * [SpringSource Suite] (http://spring.io/tools) - Ferramenta para facilitar o desenvolvimento com o *framework* SpringMVC
 * [Foundation Framework] (http://foundation.zurb.com/) - Para implementar a interface de usuário
 * Banco de Dados [MySQL] (http://dev.mysql.com/downloads/mysql/)
-* [Apache Tomcat] (http://tomcat.apache.org/download-70.cgi)
+* [Apache Tomcat] (http://tomcat.apache.org/download-70.cgi) - [Configurar Tomcat no Eclipse] (http://felipebbarbosa.wordpress.com/2012/02/26/configurando-o-apache-tomcat-7-no-eclipse-ide/)
 
 Política de *Branches*
 -----
