@@ -19,8 +19,8 @@ Linguagens, Ferramentas e Frameworks
 Política de *Branches*
 -----
 1. A *branch* **master** receberá apenas as releases, ou seja, a cada entrega haverá um *merge* para a **master**.
-2. Haverá uma *branch* **desenvolvimento**, que será a base do projeto, ou seja, assim que uma funcionalidade estiver pronta, haverá um *merge* para a *branch* **desenvolvimento**.
-3. A cada funcionalidade, uma nova *branch* será criada com o nome "**nome_da_funcionalidade_<numero_da_issue>**".
+2. Haverá uma *branch* **development**, que será a base do projeto, ou seja, assim que uma funcionalidade estiver pronta, haverá um *merge* para a *branch* **development**.
+3. A cada funcionalidade, uma nova *branch* será criada com o nome "**ft_nome_da_funcionalidade**".
   
 Padrões de Programação
 ------------------
