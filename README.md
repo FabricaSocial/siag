@@ -8,6 +8,7 @@ Linguagens, Ferramentas e Frameworks
 * Linguagem principal: **Java**
 * Linguagens Secundárias: **HTML 5**, **CSS 3** e **Javascript** (todas utilizadas para o *front-end*)
 * Padrão MVC, utilizando o *framework* [SpringMVC] (http://www.caelum.com.br/apostila-java-web/spring-mvc/)
+* [Hibernate] (http://hibernate.org/) Framework para persistência de dados.
 * IDE: [Eclipse for Java EE Developers] (http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/keplersr2)
   * [EGit] (https://www.eclipse.org/egit/) - Integração da IDE com o repositório
   * [SpringSource Suite] (http://spring.io/tools) - Ferramenta para facilitar o desenvolvimento com o *framework* SpringMVC
