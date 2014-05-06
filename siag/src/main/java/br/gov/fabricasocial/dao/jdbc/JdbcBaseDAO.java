@@ -15,5 +15,9 @@ public class JdbcBaseDAO {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public void closeConnection(Connection connection) throws SQLException {
+		connection.close();
+	}
 
 }
