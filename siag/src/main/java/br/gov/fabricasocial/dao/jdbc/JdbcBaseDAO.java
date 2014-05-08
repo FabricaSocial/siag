@@ -8,6 +8,7 @@ public class JdbcBaseDAO {
 	
 	public Connection getConnection(String username, String password) {
 		try {
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			Connection newConnection = DriverManager.getConnection("jdbc:mysql://localhost/siag",
 																	username, password);
 			return newConnection;

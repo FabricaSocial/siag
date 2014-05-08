@@ -6,11 +6,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
+import javax.naming.AuthenticationException;
+import javax.naming.NamingException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.gov.fabricasocial.controllers.UserController;
 import br.gov.fabricasocial.dao.UserDAO;
+import br.gov.fabricasocial.dao.ldap.LdapAuth;
 import br.gov.fabricasocial.models.User;
 
 public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class); 
+	
 	private String username;
 	private String password;
 	
@@ -22,14 +33,13 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 		
 		if(users.size() == 0) {
 			String insertSQL = 	"INSERT INTO `siag`.`usuario`" +
-					   	"(`nomeUsuario`,`senha`,`idTipoUsuario`)" +
-						"VALUES (?,?,?);";
+					   	"(`nomeUsuario`,`senha`)" +
+						"VALUES (?,?);";
 			
 			try {
 				PreparedStatement statement = connection.prepareStatement(insertSQL);
 				statement.setString(1, user.getUsername());
 				statement.setString(2, user.getPassword());
-				statement.setInt(3, user.getUserType());
 				
 				statement.execute();
 				statement.close();
@@ -37,7 +47,7 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 				this.closeConnection(connection);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOGGER.error("Problema em conexão com banco de dados.");
 			}
 		} else {
 			// Nothing to do
@@ -72,9 +82,9 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 
 			while (resultSet.next()) {
 				User user = new User(resultSet.getString("nomeUsuario"),
-									resultSet.getString("senha"),
-									resultSet.getInt("idTipoUsuario"));
-				
+									resultSet.getString("senha"));
+				user.setUserType(resultSet.getInt("idTipoUsuario"));
+				user.setIdUser(resultSet.getInt("idUsuario"));
 				users.add(user);
 			}
 			resultSet.close();
@@ -86,5 +96,4 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 		
 		return users;
 	}
-
 }

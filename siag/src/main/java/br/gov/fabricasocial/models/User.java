@@ -7,10 +7,9 @@ public class User {
 	String password;
 	int userType;
 	
-	public User(String username, String password, int userType) {
+	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
-		this.userType = userType;
 	}
 	
 	public int getIdUser() {

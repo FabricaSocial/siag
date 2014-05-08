@@ -3,5 +3,8 @@
     <script>
       $(document).foundation();
     </script>
+    <script>
+			$('#errorModal').foundation('reveal', 'open');
+	</script>
   </body>
 </html>
