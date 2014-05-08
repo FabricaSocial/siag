@@ -18,23 +18,29 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 	public void insert(User user) {
 		Connection connection = this.getConnection(this.username, this.password);
 		
-		String insertSQL = 	"INSERT INTO `siag`.`usuario`" +
-				   	"(`nomeUsuario`,`senha`,`idTipoUsuario`)" +
-					"VALUES (?,?,?);";
+		List<User> users = this.findByUserName(user.getUsername());
 		
-		try {
-			PreparedStatement statement = connection.prepareStatement(insertSQL);
-			statement.setString(1, user.getUsername());
-			statement.setString(2, user.getPassword());
-			statement.setInt(3, user.getUserType());
+		if(users.size() == 0) {
+			String insertSQL = 	"INSERT INTO `siag`.`usuario`" +
+					   	"(`nomeUsuario`,`senha`,`idTipoUsuario`)" +
+						"VALUES (?,?,?);";
 			
-			statement.execute();
-			statement.close();
-			
-			this.closeConnection(connection);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				PreparedStatement statement = connection.prepareStatement(insertSQL);
+				statement.setString(1, user.getUsername());
+				statement.setString(2, user.getPassword());
+				statement.setInt(3, user.getUserType());
+				
+				statement.execute();
+				statement.close();
+				
+				this.closeConnection(connection);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			// Nothing to do
 		}
 	}
 	
