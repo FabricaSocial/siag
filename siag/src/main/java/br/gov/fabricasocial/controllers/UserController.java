@@ -53,7 +53,7 @@ public class UserController {
 			} catch (NamingException namEx) {
 				LOGGER.error("AD connection error");
 			}
-			return "home";
+			return "redirect:/home";
 		} else {
 			model.addAttribute("localUsername", localUsername);
 		}

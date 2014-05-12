@@ -36,13 +36,23 @@
 		</div>
 	</div>
 	
-	<c:if test="${errorMessage == 1}">
-		<div id="errorModal" class="small reveal-modal" data-reveal>
-			<h2>Erro!</h2>
-			<p><b>Erro de Autenticação:</b>
-			Usuário ou senha inválidos.</p>
-			<a class="close-reveal-modal">&#215;</a>
-		</div>
-	</c:if>
+	<c:choose>
+		<c:when  test="${errorMessage == 1}">
+			<div id="errorModal" class="small reveal-modal" data-reveal>
+				<h2>Erro!</h2>
+				<p><b>Erro de Autenticação:</b>
+				Usuário ou senha inválidos.</p>
+				<a class="close-reveal-modal">&#215;</a>
+			</div>
+		</c:when>
+		<c:when  test="${errorMessage == 2}">
+			<div id="errorModal" class="small reveal-modal" data-reveal>
+				<h2>Erro!</h2>
+				<p><b>Erro de Conexão:</b>
+				Não foi possível conectar-se ao Active Directory.</p>
+				<a class="close-reveal-modal">&#215;</a>
+			</div>
+		</c:when>
+	</c:choose>
 
 <jsp:include page="footer.jsp"></jsp:include>
