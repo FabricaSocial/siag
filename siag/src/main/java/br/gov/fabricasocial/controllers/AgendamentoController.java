@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class AgendamentoController {
 
-	@RequestMapping(value = "agendamento/", method = RequestMethod.GET)
+	@RequestMapping(value = "/agendamento", method = RequestMethod.GET)
 	public String agendamento(Model model) {
 		
 		return "agendamento";
