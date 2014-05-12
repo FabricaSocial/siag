@@ -21,3 +21,14 @@
 			<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
 		</ul>
 	</nav>
+	
+	<div class="row">
+		<div class="large-12" align="center">
+			<img src="resources/img/gdf-logo.jpg" alt="gdf-logo" align="left" width="15%">
+			<div align="right">
+				<br><h2><b>Fabrica Social</b></h2>
+				<h4>Centro de Capacitacao Profissional - CIAS</h4>
+			</div>
+			<hr />
+		</div>
+	</div>
