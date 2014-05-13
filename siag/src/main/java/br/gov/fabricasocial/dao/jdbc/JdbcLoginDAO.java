@@ -15,11 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.gov.fabricasocial.controllers.UserController;
-import br.gov.fabricasocial.dao.UserDAO;
+import br.gov.fabricasocial.dao.LoginDAO;
 import br.gov.fabricasocial.dao.ldap.LdapAuth;
 import br.gov.fabricasocial.models.User;
 
-public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
+public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class); 
 	
 	private String username;
@@ -47,7 +47,7 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 				this.closeConnection(connection);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				LOGGER.error("Problema em conexão com banco de dados.");
+				LOGGER.error("Problema em conexï¿½o com banco de dados.");
 			}
 		} else {
 			// Nothing to do

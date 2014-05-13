@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.gov.fabricasocial.dao.UserDAO;
-import br.gov.fabricasocial.dao.jdbc.JdbcUserDAO;
+import br.gov.fabricasocial.dao.LoginDAO;
+import br.gov.fabricasocial.dao.jdbc.JdbcLoginDAO;
 import br.gov.fabricasocial.dao.ldap.LdapAuth;
 import br.gov.fabricasocial.models.User;
 
@@ -34,7 +34,7 @@ public class UserController {
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String login(Locale locale, Model model, HttpSession session) {
-		UserDAO dao = new JdbcUserDAO();
+		LoginDAO dao = new JdbcLoginDAO();
 		dao.setUserLogin(DBUSER, DBPASSWORD);
 		
 		String localUsername = System.getProperty("user.name");
@@ -66,7 +66,7 @@ public class UserController {
 						@RequestParam("username") String username,
 						@RequestParam("password") String password) {
 		
-		UserDAO dao = new JdbcUserDAO();
+		LoginDAO dao = new JdbcLoginDAO();
 		dao.setUserLogin(DBUSER, DBPASSWORD);
 		
 		User user = new User(username, password);
