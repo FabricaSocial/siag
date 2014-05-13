@@ -12,9 +12,17 @@
     	<link rel="stylesheet" type="text/css" href="resources/datepicker/jquery.datetimepicker.css"/>
 		<script src="resources/datepicker/jquery.js"></script>
 		<script src="resources/datepicker/jquery.datetimepicker.js"></script>
+		<script src="resources/js/jquery.maskedinput.js"></script>
 		
 		<title>${mensagem}</title>
 	</head>
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("input.data").mask("99/99/9999");
+	        $("input.cpf").mask("999.999.999-99");
+	});
+	</script>
 <body>
 
 	<nav class="top-bar" data-topbar>

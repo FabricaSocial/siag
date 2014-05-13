@@ -43,7 +43,11 @@
 					<div class="large-3 columns"> <p></p>
 					</div>
 					<div class="large-6 columns">
-						<input type="text" placeholder="CPF" name="cpf">
+						
+						<input type="text" id="cpf" name="cpf">
+						<script type="text/javascript">
+							jQuery("#cpf").mask("999.999.999-99");
+						</script>
 					</div>
 					<div class="large-3 columns">
 						<p></p>
