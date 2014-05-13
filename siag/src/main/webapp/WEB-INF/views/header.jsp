@@ -8,6 +8,10 @@
 		
 		<link rel="stylesheet" href="resources/css/foundation.css" />
     	<script src="resources/js/vendor/modernizr.js"></script>
+    	
+    	<link rel="stylesheet" type="text/css" href="resources/datepicker/jquery.datetimepicker.css"/>
+		<script src="resources/datepicker/jquery.js"></script>
+		<script src="resources/datepicker/jquery.datetimepicker.js"></script>
 		
 		<title>${mensagem}</title>
 	</head>

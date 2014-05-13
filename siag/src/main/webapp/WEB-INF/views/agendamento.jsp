@@ -32,9 +32,7 @@
 						<span class="prefix">Dia</span>
 					</div>
 					<div class="small-9 large-10 columns">
-						<select>
-							<option>10/06/2014</option>
-						</select>
+						<input type="text" id="datepicker" name="day">
 					</div>
 			  	</div>
 			  	
@@ -74,5 +72,28 @@
 			<p></p>
 		</div>
 	</div>
+
+<script>
+jQuery('#datepicker').datetimepicker({
+	 lang:'pt',
+	 i18n:{
+	  de:{
+	   months:[
+	    'Janeiro','Fevereiro','Março','Abril',
+	    'Maio','Junho','Julho','Agosto',
+	    'Setembro','Outubro','Novembro','Dezembro',
+	   ],
+	   dayOfWeek:[
+	    "Dom", "Seg", "Ter", "Qua", 
+	    "Qui", "Sex", "Sáb",
+	   ]
+	  }
+	 },
+	 minDate:'10.06.2014',
+	 maxDate:'18.06.2014',
+	 timepicker:false,
+	 format:'d.m.Y',
+	});
+</script>
 
 <jsp:include page="footer.jsp"></jsp:include>
