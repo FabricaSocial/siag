@@ -32,7 +32,7 @@
 						<span class="prefix">Dia</span>
 					</div>
 					<div class="small-9 large-10 columns">
-						<input type="text" id="datepicker" name="day">
+						<input type="text" placeholder="Selecione um dia" readonly id="datepicker" name="day">
 					</div>
 			  	</div>
 			  	
@@ -41,9 +41,7 @@
 						<span class="prefix">Hora</span>
 					</div>
 					<div class="small-9 large-10 columns">
-						<select>
-							<option>09:00</option>
-						</select>
+						<input type="text" placeholder="Selecione o horário" readonly id="timepicker" name="hour">
 					</div>
 			  	</div>
 			  	
@@ -62,7 +60,7 @@
 			  	<div class="row">
 			  		<div class="large-3 columns"><p></p></div>
 			  		<div class="large-6 columns">
-			  			<button class="postfix radius">Agendar</button>
+			  			<button id="agendar" class="postfix radius">Agendar</button>
 			  		</div>
 			  		<div class="large-3 columns"><p></p></div>
 			  	</div>
@@ -74,10 +72,11 @@
 	</div>
 
 <script>
+
 jQuery('#datepicker').datetimepicker({
-	 lang:'pt',
+	lang:'pt',
 	 i18n:{
-	  de:{
+	  pt:{
 	   months:[
 	    'Janeiro','Fevereiro','Março','Abril',
 	    'Maio','Junho','Julho','Agosto',
@@ -89,10 +88,32 @@ jQuery('#datepicker').datetimepicker({
 	   ]
 	  }
 	 },
-	 minDate:'10.06.2014',
-	 maxDate:'18.06.2014',
-	 timepicker:false,
-	 format:'d.m.Y',
+	 
+	  onGenerate:function( ct ){
+	    jQuery(this).find('.xdsoft_date')
+	      .toggleClass('xdsoft_disabled');
+	  },
+	  onGenerate:function( ct ){
+	    jQuery(this).find('.xdsoft_date.xdsoft_weekend')
+	      .addClass('xdsoft_disabled');
+	  },
+	  weekends:['01.01.2014','02.01.2014','03.01.2014','04.01.2014','05.01.2014','06.01.2014'],
+	  closeOnDateSelect: true,
+	  minDate:'2014/06/10',
+	  maxDate:'2014/06/18',
+	  startDate:'2014/06/10',
+	  beforeShowDay: '2014/06/12',
+	  timepicker:false,
+	  format: 'Y/m/d',
+	});	
+
+jQuery('#timepicker').datetimepicker({
+	 datepicker:false,
+	 allowTimes:[
+	  '09:00', '10:00', '11:00', 
+	  '14:00', '15:00', '16:00',
+	 ],
+	 format:'H:i',
 	});
 </script>
 

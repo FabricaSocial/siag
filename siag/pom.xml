@@ -136,6 +136,12 @@
 			<artifactId>spring-boot-starter-remote-shell</artifactId>
 			<version>1.0.0.RELEASE</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>1.7.1</version>
+  		</dependency>
 	</dependencies>
     <build>
         <plugins>

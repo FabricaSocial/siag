@@ -13,6 +13,7 @@
 		<script src="resources/datepicker/jquery.js"></script>
 		<script src="resources/datepicker/jquery.datetimepicker.js"></script>
 		<script src="resources/js/jquery.maskedinput.js"></script>
+		<script src="resources/js/jquery.js"></script>
 		
 		<title>${mensagem}</title>
 	</head>

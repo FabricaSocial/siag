@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import br.gov.fabricasocial.dao.AgendamentoDAO;
 import br.gov.fabricasocial.dao.jdbc.JdbcAgendamentoDAO;
 import br.gov.fabricasocial.models.Candidate;
+import br.gov.fabricasocial.utils.FormatString;
 
 @Controller
 public class AgendamentoController {
@@ -22,15 +23,18 @@ public class AgendamentoController {
 	@RequestMapping(value = "/agendamento", method = RequestMethod.POST)
 	public String agendamento(Locale locale, Model model, @RequestParam("cpf") String cpf) {
 		AgendamentoDAO dao = new JdbcAgendamentoDAO();
-		
 		dao.setUserLogin(username, password);
+		
+		FormatString formatString = new FormatString();
+		
+		cpf = formatString.unformatCPF(cpf);
 		
 		List<Candidate> candidates = dao.findByCPF(cpf);
 		
 		if(candidates.size() > 0) {
 			Candidate candidate = candidates.get(FIST_ELEMENT);
+			candidate.setCpf(formatString.formatCPF(cpf));
 			model.addAttribute(candidate);
-			
 		}
 		return "agendamento";
 	}

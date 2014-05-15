@@ -9,6 +9,7 @@ import java.util.List;
 
 import br.gov.fabricasocial.dao.AgendamentoDAO;
 import br.gov.fabricasocial.models.Candidate;
+import br.gov.fabricasocial.models.Schedule;
 
 public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	private String username;
@@ -68,4 +69,40 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 		return candidate;
 	}
 
+	@Override
+	public List<Schedule> getScheduleAvailable(String date) {
+		Connection connection = this.getConnection(username, password);
+		
+		String selectSQL = 	"SELECT d.data, h.horario, dh.vagas " + 
+							"FROM Dia_Hora AS dh " +
+							"INNER JOIN Dia AS d ON dh.idDia = d.idDia " +
+							"INNER JOIN Hora AS h ON dh.idHora = h.idHora " +
+							"WHERE dh.vagas > 0 " +
+							"AND d.data = ?" +
+							"GROUP BY h.horario;";
+		
+		List<Schedule> schedules = new ArrayList<Schedule>();
+				
+		try {
+			PreparedStatement statement = connection.prepareStatement(selectSQL);
+			statement.setString(1, date);
+			
+			ResultSet resultSet = statement.executeQuery();
+			
+			while(resultSet.next()) {
+				Schedule schedule = new Schedule();
+				schedule.setDate(resultSet.getDate(1));
+				schedule.setTime(resultSet.getTime(2));
+				schedule.setVacancy(resultSet.getInt(3));
+				
+				schedules.add(schedule);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return schedules;
+	}
 }

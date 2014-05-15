@@ -44,7 +44,7 @@
 					</div>
 					<div class="large-6 columns">
 						
-						<input type="text" id="cpf" name="cpf">
+						<input type="text" id="cpf" name="cpf" required>
 						<script type="text/javascript">
 							jQuery("#cpf").mask("999.999.999-99");
 						</script>
