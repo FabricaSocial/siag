@@ -2,6 +2,8 @@ package br.gov.fabricasocial.utils;
 
 import java.util.List;
 
+import br.gov.fabricasocial.dao.AgendamentoDAO;
+import br.gov.fabricasocial.dao.jdbc.JdbcAgendamentoDAO;
 import br.gov.fabricasocial.models.Schedule;
 
 import com.google.gson.Gson;

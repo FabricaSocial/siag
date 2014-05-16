@@ -10,10 +10,10 @@
     	<script src="resources/js/vendor/modernizr.js"></script>
     	
     	<link rel="stylesheet" type="text/css" href="resources/datepicker/jquery.datetimepicker.css"/>
-		<script src="resources/datepicker/jquery.js"></script>
+		<script src="resources/js/jquery-2.1.1.min.js"></script>
+		
 		<script src="resources/datepicker/jquery.datetimepicker.js"></script>
 		<script src="resources/js/jquery.maskedinput.js"></script>
-		<script src="resources/js/jquery.js"></script>
 		
 		<title>${mensagem}</title>
 	</head>

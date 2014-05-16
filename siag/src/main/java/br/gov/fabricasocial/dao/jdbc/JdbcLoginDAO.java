@@ -6,21 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.naming.AuthenticationException;
-import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.gov.fabricasocial.controllers.UserController;
 import br.gov.fabricasocial.dao.LoginDAO;
-import br.gov.fabricasocial.dao.ldap.LdapAuth;
 import br.gov.fabricasocial.models.User;
 
 public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class); 
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
+	private static final int FIRST_ELEMENT = 0; 
 	
 	private String username;
 	private String password;
@@ -29,9 +26,9 @@ public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 	public void insert(User user) {
 		Connection connection = this.getConnection(this.username, this.password);
 		
-		List<User> users = this.findByUserName(user.getUsername());
+		User existUser = this.findByUserName(user.getUsername());
 		
-		if(users.size() == 0) {
+		if(existUser == null) {
 			String insertSQL = 	"INSERT INTO `siag`.`usuario`" +
 					   	"(`nomeUsuario`,`senha`)" +
 						"VALUES (?,?);";
@@ -61,7 +58,7 @@ public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 	}
 
 	@Override
-	public List<User> findByUserName(String username) {
+	public User findByUserName(String username) {
 		// TODO Auto-generated method stub
 		Connection connection = this.getConnection(this.username, this.password);
 		
@@ -89,11 +86,13 @@ public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 			}
 			resultSet.close();
 			statement.close();
+			
+			return users.get(FIRST_ELEMENT);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
+			return null;
 		}
-		
-		return users;
 	}
 }

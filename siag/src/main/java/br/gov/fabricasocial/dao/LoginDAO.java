@@ -8,5 +8,5 @@ public interface LoginDAO {
 	
 	public void setUserLogin(String username, String password);
 	public void insert(User user);
-	public List<User> findByUserName(String username);
+	public User findByUserName(String username);
 }

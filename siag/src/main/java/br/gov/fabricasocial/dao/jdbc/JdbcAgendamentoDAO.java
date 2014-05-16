@@ -10,6 +10,7 @@ import java.util.List;
 import br.gov.fabricasocial.dao.AgendamentoDAO;
 import br.gov.fabricasocial.models.Candidate;
 import br.gov.fabricasocial.models.Schedule;
+import br.gov.fabricasocial.models.Scheduling;
 
 public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	private String username;
@@ -54,26 +55,12 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 		this.username = username;
 		this.password = password;		
 	}
-	
-	private Candidate setCandidate(ResultSet resultSet) throws SQLException {
-		Candidate candidate = new Candidate();
-		candidate.setIdCandidato(resultSet.getInt(1));
-		candidate.setCpf(resultSet.getString(2));
-		candidate.setNome(resultSet.getString(3));
-		candidate.setDataInscricao(resultSet.getDate(4));
-		candidate.setCidade(resultSet.getString(5));
-		candidate.setPrograma(resultSet.getString(6));
-		candidate.setNecessidadeEspecial(resultSet.getString(7));
-		candidate.setTipoDeficiencia(resultSet.getString(8));
-		
-		return candidate;
-	}
 
 	@Override
 	public List<Schedule> getScheduleAvailable(String date) {
 		Connection connection = this.getConnection(username, password);
 		
-		String selectSQL = 	"SELECT d.data, h.horario, dh.vagas " + 
+		String selectSQL = 	"SELECT dh.idDia, d.data, dh.idHora, h.horario, dh.vagas " + 
 							"FROM Dia_Hora AS dh " +
 							"INNER JOIN Dia AS d ON dh.idDia = d.idDia " +
 							"INNER JOIN Hora AS h ON dh.idHora = h.idHora " +
@@ -90,10 +77,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			ResultSet resultSet = statement.executeQuery();
 			
 			while(resultSet.next()) {
-				Schedule schedule = new Schedule();
-				schedule.setDate(resultSet.getDate(1));
-				schedule.setTime(resultSet.getTime(2));
-				schedule.setVacancy(resultSet.getInt(3));
+				Schedule schedule = this.setSchedule(resultSet);
 				
 				schedules.add(schedule);
 			}
@@ -104,5 +88,86 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 		
 		
 		return schedules;
+	}
+	
+	@Override
+	public boolean schedule(Scheduling scheduling){
+		Connection connection = this.getConnection(username, password);
+		
+		try {
+			if(!validateScheduling(connection, scheduling)) {
+				this.updateSchedule(connection, scheduling);
+				this.insertScheduling(connection, scheduling);
+				
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	private void updateSchedule(Connection connection, Scheduling scheduling) throws SQLException {
+		String updateSQL = "UPDATE `siag`.`Dia_Hora` SET `vagas`=vagas-1 WHERE `idDia`=? and`idHora`=?;";
+		
+		PreparedStatement statement = connection.prepareStatement(updateSQL);
+		statement.setInt(1, scheduling.getDate());
+		statement.setInt(2, scheduling.getHour());
+		
+		statement.executeUpdate();
+	}
+	
+	private void insertScheduling(Connection connection, Scheduling scheduling) throws SQLException {
+		String insertSQL = 	"INSERT INTO `siag`.`Agendamento` " +
+							"(`idCandidato`, `idUsuario`, `idDia`, `idHora`) " +
+							"VALUES (?, ?, ?, ?);";
+		
+		PreparedStatement statement = connection.prepareStatement(insertSQL);
+		statement.setInt(1, scheduling.getCandidate());
+		statement.setInt(2, scheduling.getUser());
+		statement.setInt(3, scheduling.getDate());
+		statement.setInt(4, scheduling.getHour());
+		
+		statement.executeUpdate();
+	}
+	
+	private boolean validateScheduling(Connection connection, Scheduling scheduling) throws SQLException {
+		String selectSQL = "SELECT * FROM `siag`.`Agendamento` WHERE idDia=? AND idHora=?;";
+		
+		PreparedStatement statement = connection.prepareStatement(selectSQL);
+		statement.setInt(1, scheduling.getDate());
+		statement.setInt(2, scheduling.getHour());
+		
+		ResultSet resultSet = statement.executeQuery();
+		
+		return resultSet.first();
+	}
+	
+	private Schedule setSchedule(ResultSet resultSet) throws SQLException {
+		Schedule schedule = new Schedule();
+		schedule.setIdDate(resultSet.getInt(1));
+		schedule.setDate(resultSet.getString(2));
+		schedule.setIdTime(resultSet.getInt(3));
+		schedule.setTime(resultSet.getString(4));
+		schedule.setVacancy(resultSet.getInt(5));
+		
+		return schedule;
+	}
+	
+	private Candidate setCandidate(ResultSet resultSet) throws SQLException {
+		Candidate candidate = new Candidate();
+		candidate.setIdCandidato(resultSet.getInt(1));
+		candidate.setCpf(resultSet.getString(2));
+		candidate.setNome(resultSet.getString(3));
+		candidate.setDataInscricao(resultSet.getDate(4));
+		candidate.setCidade(resultSet.getString(5));
+		candidate.setPrograma(resultSet.getString(6));
+		candidate.setNecessidadeEspecial(resultSet.getString(7));
+		candidate.setTipoDeficiencia(resultSet.getString(8));
+		
+		return candidate;
 	}
 }

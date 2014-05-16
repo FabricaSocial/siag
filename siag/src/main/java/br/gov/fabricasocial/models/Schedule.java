@@ -1,24 +1,24 @@
 package br.gov.fabricasocial.models;
 
-import java.sql.Time;
-import java.sql.Date;
 
 public class Schedule {
 	
-	private Date date;
-	private Time time;
+	private int idDate;
+	private String date;
+	private int idTime;
+	private String time;
 	private int vacancy;
 	
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
-	public Time getTime() {
+	public String getTime() {
 		return time;
 	}
-	public void setTime(Time time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 	public int getVacancy() {
@@ -26,5 +26,17 @@ public class Schedule {
 	}
 	public void setVacancy(int vacancy) {
 		this.vacancy = vacancy;
+	}
+	public int getIdTime() {
+		return idTime;
+	}
+	public void setIdTime(int idTime) {
+		this.idTime = idTime;
+	}
+	public int getIdDate() {
+		return idDate;
+	}
+	public void setIdDate(int idDate) {
+		this.idDate = idDate;
 	}
 }

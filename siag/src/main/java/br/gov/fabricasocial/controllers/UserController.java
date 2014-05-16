@@ -1,6 +1,5 @@
 package br.gov.fabricasocial.controllers;
 
-import java.util.List;
 import java.util.Locale;
 
 import javax.naming.AuthenticationException;
@@ -24,8 +23,6 @@ import br.gov.fabricasocial.models.User;
 public class UserController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class); 
 	
-	private static int FIRST_ELEMENT = 0;
-	
 	private static String DBUSER = "Cadastro";
 	private static String DBPASSWORD = "cadastro";
 	
@@ -39,10 +36,9 @@ public class UserController {
 		
 		String localUsername = System.getProperty("user.name");
 		
-		List<User> users = dao.findByUserName(localUsername);
+		User user = dao.findByUserName(localUsername);
 	
-		if(users.size() != 0) {
-			User user = users.get(FIRST_ELEMENT);
+		if(user != null) {
 			try {
 				LdapAuth ldapAuth = new LdapAuth();
 				ldapAuth.authenticateUser(user);
