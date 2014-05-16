@@ -13,6 +13,7 @@ import br.gov.fabricasocial.models.Schedule;
 import br.gov.fabricasocial.models.Scheduling;
 
 public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
+	private static final int FIRST_ELEMENT = 0;
 	private String username;
 	private String password;
 	
@@ -91,59 +92,102 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	}
 	
 	@Override
+	public Schedule getVacancy(int date, int hour) {
+		Connection connection = this.getConnection(username, password);
+		
+		String selectSQL = "SELECT idDia, idHora, vagas FROM siag.Dia_Hora WHERE idDia=? AND idHora=?;";
+		
+		List<Schedule> schedules = new ArrayList<Schedule>();
+		
+		try {
+			PreparedStatement statement = connection.prepareStatement(selectSQL);
+			
+			statement.setInt(1, date);
+			statement.setInt(2, hour);
+			
+			ResultSet resultSet = statement.executeQuery();
+			
+			while(resultSet.next()) {
+				Schedule schedule = new Schedule();
+				schedule.setIdDate(resultSet.getInt(1));
+				schedule.setIdTime(resultSet.getInt(2));
+				schedule.setVacancy(resultSet.getInt(3));
+				
+				schedules.add(schedule);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return schedules.get(FIRST_ELEMENT);
+	}
+	
+	@Override
 	public boolean schedule(Scheduling scheduling){
 		Connection connection = this.getConnection(username, password);
 		
+		if(validateScheduling(connection, scheduling)) {
+			this.updateSchedule(connection, scheduling);
+			this.insertScheduling(connection, scheduling);
+	
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private void updateSchedule(Connection connection, Scheduling scheduling){
+		String updateSQL = "UPDATE `siag`.`Dia_Hora` SET `vagas`=vagas-1 WHERE `idDia`=? and`idHora`=?;";
+		
+		PreparedStatement statement;
 		try {
-			if(!validateScheduling(connection, scheduling)) {
-				this.updateSchedule(connection, scheduling);
-				this.insertScheduling(connection, scheduling);
-				
-				return true;
-			} else {
-				return false;
-			}
+			statement = connection.prepareStatement(updateSQL);
+			statement.setInt(1, scheduling.getDate());
+			statement.setInt(2, scheduling.getHour());
+			
+			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
 	}
 	
-	private void updateSchedule(Connection connection, Scheduling scheduling) throws SQLException {
-		String updateSQL = "UPDATE `siag`.`Dia_Hora` SET `vagas`=vagas-1 WHERE `idDia`=? and`idHora`=?;";
-		
-		PreparedStatement statement = connection.prepareStatement(updateSQL);
-		statement.setInt(1, scheduling.getDate());
-		statement.setInt(2, scheduling.getHour());
-		
-		statement.executeUpdate();
-	}
-	
-	private void insertScheduling(Connection connection, Scheduling scheduling) throws SQLException {
+	private void insertScheduling(Connection connection, Scheduling scheduling) {
 		String insertSQL = 	"INSERT INTO `siag`.`Agendamento` " +
 							"(`idCandidato`, `idUsuario`, `idDia`, `idHora`) " +
 							"VALUES (?, ?, ?, ?);";
 		
-		PreparedStatement statement = connection.prepareStatement(insertSQL);
-		statement.setInt(1, scheduling.getCandidate());
-		statement.setInt(2, scheduling.getUser());
-		statement.setInt(3, scheduling.getDate());
-		statement.setInt(4, scheduling.getHour());
-		
-		statement.executeUpdate();
+		try {
+			PreparedStatement statement = connection.prepareStatement(insertSQL);
+			statement.setInt(1, scheduling.getCandidate());
+			statement.setInt(2, scheduling.getUser());
+			statement.setInt(3, scheduling.getDate());
+			statement.setInt(4, scheduling.getHour());
+			
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private boolean validateScheduling(Connection connection, Scheduling scheduling) throws SQLException {
-		String selectSQL = "SELECT * FROM `siag`.`Agendamento` WHERE idDia=? AND idHora=?;";
+	private boolean validateScheduling(Connection connection, Scheduling scheduling) {
+		String selectSQL = 	"SELECT * FROM Dia_Hora WHERE idDia=? AND idHora=? AND vagas>0;";
 		
-		PreparedStatement statement = connection.prepareStatement(selectSQL);
-		statement.setInt(1, scheduling.getDate());
-		statement.setInt(2, scheduling.getHour());
-		
-		ResultSet resultSet = statement.executeQuery();
-		
-		return resultSet.first();
+		try {
+			PreparedStatement statement = connection.prepareStatement(selectSQL);
+			statement.setInt(1, scheduling.getDate());
+			statement.setInt(2, scheduling.getHour());
+			
+			ResultSet resultSet = statement.executeQuery();
+
+			return resultSet.first();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			return true;	
+		}
 	}
 	
 	private Schedule setSchedule(ResultSet resultSet) throws SQLException {

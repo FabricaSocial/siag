@@ -58,7 +58,20 @@ public class AgendamentoController {
 		return json;
 	}
 	
-	@RequestMapping(value="/agendamento/agendar", method=RequestMethod.POST)
+	@RequestMapping(value ="/getVacancy/{date}/{hour}", method=RequestMethod.GET)  
+	public @ResponseBody String getVacancy(	Model model,
+											@PathVariable int date,
+											@PathVariable int hour){ 
+		AgendamentoDAO dao = new JdbcAgendamentoDAO();
+		dao.setUserLogin(username, password);
+		
+		Schedule vacancy = dao.getVacancy(date, hour);
+		String vacancyAvailable = Integer.toString(vacancy.getVacancy());
+		
+		return vacancyAvailable;
+	}
+	
+	@RequestMapping(value="/agendar", method=RequestMethod.POST)
 	public String schedule(Model model, @RequestParam("idDay") int day,
 										@RequestParam("hour") int hour,
 										@RequestParam("candidate") int candidate) {
@@ -67,9 +80,9 @@ public class AgendamentoController {
 		dao.setUserLogin(username, password);
 		
 		Scheduling scheduling = new Scheduling(candidate, 1, day, hour);
-	
+
 		if(dao.schedule(scheduling)) {
-			return "sucesso";
+			return "agendamento_sucesso";
 		} else {
 			return "erro";
 		}

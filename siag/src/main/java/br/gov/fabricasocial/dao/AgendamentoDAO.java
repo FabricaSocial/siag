@@ -11,5 +11,6 @@ public interface AgendamentoDAO {
 	public List<Candidate> findByCPF(String cpf);
 	public List<Schedule> getScheduleAvailable(String date);
 	public boolean schedule(Scheduling scheduling);
+	public Schedule getVacancy(int date, int hour);
 
 }
