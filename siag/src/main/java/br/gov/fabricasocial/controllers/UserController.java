@@ -3,6 +3,8 @@ package br.gov.fabricasocial.controllers;
 import java.util.List;
 import java.util.Locale;
 
+import javassist.tools.framedump;
+
 import javax.naming.AuthenticationException;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
@@ -15,16 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.gov.fabricasocial.dao.UserDAO;
-import br.gov.fabricasocial.dao.jdbc.JdbcUserDAO;
+import br.gov.fabricasocial.dao.LoginDAO;
+import br.gov.fabricasocial.dao.jdbc.JdbcLoginDAO;
 import br.gov.fabricasocial.dao.ldap.LdapAuth;
 import br.gov.fabricasocial.models.User;
 
 @Controller
 public class UserController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class); 
-	
-	private static int FIRST_ELEMENT = 0;
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
+	private static final int FIRST_ELEMENT = 0; 
 	
 	private static String DBUSER = "Cadastro";
 	private static String DBPASSWORD = "cadastro";
@@ -34,16 +36,16 @@ public class UserController {
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String login(Locale locale, Model model, HttpSession session) {
-		UserDAO dao = new JdbcUserDAO();
+		LoginDAO dao = new JdbcLoginDAO();
 		dao.setUserLogin(DBUSER, DBPASSWORD);
 		
 		String localUsername = System.getProperty("user.name");
 		
 		List<User> users = dao.findByUserName(localUsername);
-	
-		if(users.size() != 0) {
-			User user = users.get(FIRST_ELEMENT);
+		
+		if(!users.isEmpty()) {
 			try {
+				User user = users.get(FIRST_ELEMENT);
 				LdapAuth ldapAuth = new LdapAuth();
 				ldapAuth.authenticateUser(user);
 				
@@ -66,7 +68,7 @@ public class UserController {
 						@RequestParam("username") String username,
 						@RequestParam("password") String password) {
 		
-		UserDAO dao = new JdbcUserDAO();
+		LoginDAO dao = new JdbcLoginDAO();
 		dao.setUserLogin(DBUSER, DBPASSWORD);
 		
 		User user = new User(username, password);

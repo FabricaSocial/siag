@@ -6,21 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.naming.AuthenticationException;
-import javax.naming.NamingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.gov.fabricasocial.controllers.UserController;
-import br.gov.fabricasocial.dao.UserDAO;
-import br.gov.fabricasocial.dao.ldap.LdapAuth;
+import br.gov.fabricasocial.dao.LoginDAO;
 import br.gov.fabricasocial.models.User;
 
-public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class); 
+public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
+	private static final int FIRST_ELEMENT = 0; 
 	
 	private String username;
 	private String password;
@@ -31,7 +28,7 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 		
 		List<User> users = this.findByUserName(user.getUsername());
 		
-		if(users.size() == 0) {
+		if(users.get(FIRST_ELEMENT) == null) {
 			String insertSQL = 	"INSERT INTO `siag`.`usuario`" +
 					   	"(`nomeUsuario`,`senha`)" +
 						"VALUES (?,?);";
@@ -47,8 +44,7 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 				this.closeConnection(connection);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-				LOGGER.error("Problema em conexão com banco de dados.");
+				LOGGER.error("Problema em conexï¿½o com banco de dados.");
 			}
 		} else {
 			// Nothing to do
@@ -90,11 +86,13 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 			}
 			resultSet.close();
 			statement.close();
+			
+			return users;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
+			return null;
 		}
-		
-		return users;
 	}
 }

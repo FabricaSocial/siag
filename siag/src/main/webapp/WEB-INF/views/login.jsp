@@ -1,16 +1,5 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="header.jsp"></jsp:include>
-	
-	<div class="row">
-		<div class="large-12" align="center">
-			<img src="resources/img/gdf-logo.jpg" alt="gdf-logo" align="left" width="15%">
-			<div align="right">
-				<br><h2><b>Fabrica Social</b></h2>
-				<h4>Centro de Capacitacao Profissional - CIAS</h4>
-			</div>
-			<hr />
-		</div>
-	</div>
 
 	<div class="row">
 		<div class="large-4 medium-4 columns">
