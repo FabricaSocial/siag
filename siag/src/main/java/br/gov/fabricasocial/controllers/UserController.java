@@ -3,8 +3,6 @@ package br.gov.fabricasocial.controllers;
 import java.util.List;
 import java.util.Locale;
 
-import javassist.tools.framedump;
-
 import javax.naming.AuthenticationException;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;

@@ -9,10 +9,10 @@
 	</div>
 
 	<div class="row">
-		<div class="large-1 columns">
+		<div class="large-1 medium-1 columns">
 			<p></p>
 		</div>
-		<div class="large-5 columns">
+		<div class="large-5 medium-5 columns">
 			<ul class="pricing-table">
 				<li class="title"><b>${candidate.nome}</b></li>
 				<li class="bullet-item"><b>CPF: </b> ${candidate.cpf}</li>
@@ -21,17 +21,17 @@
 				<li class="description">Inscrição em: ${candidate.dataInscricao}</li>
 			</ul>
 		</div>
-		<div class="large-1 columns">
+		<div class="large-1 medium-1 columns">
 			<p></p>
 		</div>
-		<div class="large-4 columns">
+		<div class="large-4 medium-4 columns">
 			<br>
 			<form action="agendar" method="post">
 				<div class="row collapse">
-					<div class="small-3 large-2 columns">
+					<div class="small-3 large-2 medium-2 columns">
 						<span class="prefix">Dia</span>
 					</div>
-					<div class="small-9 large-10 columns">
+					<div class="small-9 medium-10 large-10 columns">
 						<input type="text" placeholder="Selecione um dia" readonly id="datepicker" name="day">
 						<input type="hidden" id="idDay" name="idDay">
 						<input type="hidden" value="${candidate.idCandidato}" name="candidate">
@@ -39,10 +39,10 @@
 			  	</div>
 			  	
 			  	<div class="row collapse">
-					<div class="small-3 large-2 columns">
+					<div class="small-3 large-2 medium-2 columns">
 						<span class="prefix">Hora</span>
 					</div>
-					<div class="small-9 large-10 columns">
+					<div class="small-9 large-10 medium-10 columns">
 						<select id="hourSelect" name="hour">
 							<option DISABLED>Selecione um horário</option>
 						</select>
@@ -50,24 +50,24 @@
 			  	</div>
 			  	
 			  	<div class="row collapse">
-					<div class="small-3 large-7 columns">
+					<div class="small-3 large-7 medium-7 columns">
 						<span class="prefix">Vagas Disponíveis</span>
 					</div>
-					<div class="small-9 large-5 columns">
+					<div class="small-9 large-5 medium-5 columns">
 						<input type="text" readonly id="vacancy" name="vacancy">
 					</div>
 			  	</div>
 
 			  	<div class="row">
-			  		<div class="large-3 columns"><p></p></div>
-			  		<div class="large-6 columns">
+			  		<div class="large-3 medium-3 columns"><p></p></div>
+			  		<div class="large-6 medium-6 columns">
 			  			<button id="agendar" class="postfix radius">Agendar</button>
 			  		</div>
-			  		<div class="large-3 columns"><p></p></div>
+			  		<div class="large-3 medium-3 columns"><p></p></div>
 			  	</div>
 			</form>
 		</div>
-		<div class="large-1 columns">
+		<div class="large-1 medium-1 columns">
 			<p></p>
 		</div>
 	</div>

@@ -16,8 +16,6 @@ import br.gov.fabricasocial.models.User;
 
 public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-
-	private static final int FIRST_ELEMENT = 0; 
 	
 	private String username;
 	private String password;
@@ -28,7 +26,7 @@ public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 		
 		List<User> users = this.findByUserName(user.getUsername());
 		
-		if(users.get(FIRST_ELEMENT) == null) {
+		if(users.isEmpty()) {
 			String insertSQL = 	"INSERT INTO `siag`.`usuario`" +
 					   	"(`nomeUsuario`,`senha`)" +
 						"VALUES (?,?);";
