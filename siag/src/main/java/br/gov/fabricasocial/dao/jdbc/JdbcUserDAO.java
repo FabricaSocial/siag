@@ -47,6 +47,7 @@ public class JdbcUserDAO extends JdbcBaseDAO implements UserDAO{
 				this.closeConnection(connection);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
 				LOGGER.error("Problema em conexão com banco de dados.");
 			}
 		} else {
