@@ -18,7 +18,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	private String password;
 	
 	@Override
-	public List<Candidate> findByCPF(String cpf) {
+	public List<Candidate> findByCPF(String cpf) {		
 		Connection connection = this.getConnection(username, password);
 		
 		String selectSQL =	"SELECT cand.idCandidato, cand.cpf, cand.nome, cand.dataInscricao," +
@@ -32,6 +32,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 							"WHERE cand.cpf=?";
 		
 		List<Candidate> candidates = new ArrayList<Candidate>();
+
 		try {
 			PreparedStatement statement = connection.prepareStatement(selectSQL);
 			statement.setString(1, cpf);

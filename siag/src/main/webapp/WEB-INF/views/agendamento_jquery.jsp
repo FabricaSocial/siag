@@ -1,5 +1,5 @@
 <script>
-$( "#datepicker" ).blur(function() {
+$( "#datepicker" ).change(function() {
 	var date = $('#datepicker').val();
 	
 	var url = 'getTime/' + date;
@@ -26,7 +26,7 @@ $( "#datepicker" ).blur(function() {
 </script>
 
 <script>
-$( "#hourSelect" ).blur(function() {
+$( "#hourSelect" ).change(function() {
 	var date = $('#idDay').val();
 	var hour = $('#hourSelect').val();
 	

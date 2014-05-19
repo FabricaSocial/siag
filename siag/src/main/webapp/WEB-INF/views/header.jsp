@@ -21,19 +21,26 @@
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$("input.data").mask("99/99/9999");
-	        $("input.cpf").mask("999.999.999-99");
+	    $("input.cpf").mask("999.999.999-99");
 	});
 	</script>
 <body>
 
-	<nav class="top-bar" data-topbar>
-		<ul class="title-area">
-			<li class="name">
-				<h1><a href="/fabricasocial">SIAG</a></h1>
-			</li>
-			<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-		</ul>
-	</nav>
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="/fabricasocial">SIAG</a></h1>
+    </li>
+    <li class="toggle-topbar menu-icon"><a href="#"></a></li>
+  </ul>
+
+  <section class="top-bar-section">
+    <!-- Right Nav Section -->
+    <ul class="right">
+      <li class="active"><a href="/fabricasocial/sair">Sair</a></li>
+    </ul>
+  </section>
+</nav>
 	
 	<div class="row">
 		<div class="large-12" align="center">

@@ -13,11 +13,21 @@ public class AppController {
 	private SessionController sessionController = new SessionController();
 
 	@RequestMapping(value = "/home")
-	public String agendamento(Locale locale, Model model, HttpServletRequest request) {
+	public String home(Locale locale, Model model, HttpServletRequest request) {
 		if(sessionController.checkSession(request)){
 			return "home";
 		} else {
 			return "redirect:/";
 		}
+	}
+	
+	@RequestMapping(value = "/sair")
+	public String logout(HttpServletRequest request) {
+		if(sessionController.checkSession(request)){
+			sessionController.finishSession(request);
+		} else {
+			//Nothing to do
+		}
+		return "redirect:/";
 	}
 }

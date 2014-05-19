@@ -32,6 +32,7 @@
 		</div>
 	</div>
 	
+	${cpfNaoCadastrado}
 
 <jsp:include page="agendamento_modal.jsp"></jsp:include>
 <jsp:include page="footer.jsp"></jsp:include>

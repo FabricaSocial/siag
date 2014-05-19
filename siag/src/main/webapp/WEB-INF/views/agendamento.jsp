@@ -54,7 +54,7 @@
 						<span class="prefix">Vagas Disponíveis</span>
 					</div>
 					<div class="small-9 large-5 medium-5 columns">
-						<input type="text" readonly id="vacancy" name="vacancy">
+						<input type="number" readonly id="vacancy" name="vacancy" required>
 					</div>
 			  	</div>
 

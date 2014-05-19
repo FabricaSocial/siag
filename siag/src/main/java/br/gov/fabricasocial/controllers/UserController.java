@@ -40,6 +40,7 @@ public class UserController {
 		LoginDAO dao = new JdbcLoginDAO();
 		dao.setUserLogin(DBUSER, DBPASSWORD);
 		
+		/*
 		String localUsername = System.getProperty("user.name");
 		List<User> users = dao.findByUserName(localUsername);
 
@@ -63,6 +64,11 @@ public class UserController {
 		}
 		
 		return "login";
+		*/
+		
+		User user = new User("matheus.fernandes", "81614391");
+		sessionController.startSession(request, user);
+		return "home";
 	}
 	
 	@RequestMapping(value="/login", method = RequestMethod.POST)

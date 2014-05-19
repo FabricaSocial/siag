@@ -24,28 +24,30 @@ import br.gov.fabricasocial.utils.JsonConverter;
 @Controller
 public class AgendamentoController {
 	private SessionController sessionController = new SessionController();
+	private FormatString formatString = new FormatString();
+	
 	private static final int FIST_ELEMENT = 0;
 	private static String username = "Cadastro";
 	private static String password = "cadastro";
 
 	@RequestMapping(value = "/agendamento", method = RequestMethod.POST)
-	public String agendamento(HttpServletRequest request, Model model, @RequestParam("cpf") String cpf) {
+	public String scheduling(HttpServletRequest request, Model model, @RequestParam("cpf") String cpf) {
 		if(sessionController.checkSession(request)) {
 			AgendamentoDAO dao = new JdbcAgendamentoDAO();
 			dao.setUserLogin(username, password);
 			
-			FormatString formatString = new FormatString();
-			
 			cpf = formatString.unformatCPF(cpf);
-			
 			List<Candidate> candidates = dao.findByCPF(cpf);
 			
 			if(candidates.size() > 0) {
 				Candidate candidate = candidates.get(FIST_ELEMENT);
 				candidate.setCpf(formatString.formatCPF(cpf));
 				model.addAttribute(candidate);
+				
+				return "agendamento";
+			} else{
+				return "redirect:/";
 			}
-			return "agendamento";
 		} else {
 			return "redirect:/";
 		}
@@ -85,6 +87,7 @@ public class AgendamentoController {
 										@RequestParam("candidate") int candidate) {
 		
 		if(sessionController.checkSession(request)) {
+			System.out.println("AQUI");
 			AgendamentoDAO dao = new JdbcAgendamentoDAO();
 			dao.setUserLogin(username, password);
 			
@@ -98,5 +101,25 @@ public class AgendamentoController {
 		} else {
 			return "redirect:/";
 		}
-	}	
+	}
+	
+	@RequestMapping(value ="/cpfValidate/{field1}.{field2}.{field3}-{digit}", method=RequestMethod.GET)  
+	public @ResponseBody String cpfValidate(Model model, 	@PathVariable String field1,
+															@PathVariable String field2,
+															@PathVariable String field3,
+															@PathVariable String digit){ 
+	    AgendamentoDAO dao = new JdbcAgendamentoDAO();
+	    dao.setUserLogin(username, password);
+	    
+	    String cpf = field1 + field2 + field3 + digit;
+	    
+	    List<Candidate> candidates = dao.findByCPF(cpf);
+		
+		if(candidates.size() > 0) {
+			Candidate candidate = candidates.get(FIST_ELEMENT);
+			return candidate.getNome();
+		}
+		return "CPF não cadastrado";
+
+	}
 }
