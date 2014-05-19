@@ -27,7 +27,7 @@ public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 		List<User> users = this.findByUserName(user.getUsername());
 		
 		if(users.isEmpty()) {
-			String insertSQL = 	"INSERT INTO `siag`.`usuario`" +
+			String insertSQL = 	"INSERT INTO `siag`.`Usuario`" +
 					   	"(`nomeUsuario`,`senha`)" +
 						"VALUES (?,?);";
 			
@@ -60,12 +60,9 @@ public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 		// TODO Auto-generated method stub
 		Connection connection = this.getConnection(this.username, this.password);
 		
-		String selectSQL =	"SELECT `usuario`.`idUsuario`, " +
-						    "`usuario`.`nomeUsuario`, " +
-						    "`usuario`.`senha`, " +
-						    "`usuario`.`idTipoUsuario` " +
-						    "FROM `siag`.`usuario`" +
-						    "WHERE `usuario`.`nomeUsuario`=?;";
+		String selectSQL =	"SELECT idUsuario, nomeUsuario, senha, idTipoUsuario " +
+						    "FROM Usuario " +
+						    "WHERE nomeUsuario=?;";
 		
 		List<User> users = new ArrayList<User>();
 		
