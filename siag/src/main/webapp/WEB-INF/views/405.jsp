@@ -4,7 +4,7 @@
 <div class="row" align="center">
 	<h2>Método não permitido</h2>
 	<hr>
-	<p>Desculpe, método não permitido.</p>
+	<p>Desculpe, essa página foi acessada de forma inesperada.</p>
 </div>
 
 <jsp:include page="footer.jsp"></jsp:include>
