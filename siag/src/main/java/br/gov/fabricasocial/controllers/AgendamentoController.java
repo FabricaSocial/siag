@@ -1,7 +1,6 @@
 package br.gov.fabricasocial.controllers;
 
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +24,7 @@ import br.gov.fabricasocial.utils.JsonConverter;
 public class AgendamentoController {
 	private SessionController sessionController = new SessionController();
 	private FormatString formatString = new FormatString();
+	AgendamentoDAO dao = new JdbcAgendamentoDAO();
 	
 	private static final int FIST_ELEMENT = 0;
 	private static String username = "Cadastro";
@@ -33,20 +33,24 @@ public class AgendamentoController {
 	@RequestMapping(value = "/agendamento", method = RequestMethod.POST)
 	public String scheduling(HttpServletRequest request, Model model, @RequestParam("cpf") String cpf) {
 		if(sessionController.checkSession(request)) {
-			AgendamentoDAO dao = new JdbcAgendamentoDAO();
 			dao.setUserLogin(username, password);
 			
 			cpf = formatString.unformatCPF(cpf);
 			List<Candidate> candidates = dao.findByCPF(cpf);
 			
-			if(candidates.size() > 0) {
-				Candidate candidate = candidates.get(FIST_ELEMENT);
-				candidate.setCpf(formatString.formatCPF(cpf));
-				model.addAttribute(candidate);
+			Candidate candidate = candidates.get(FIST_ELEMENT);
+			candidate.setCpf(formatString.formatCPF(cpf));
+			model.addAttribute(candidate);
+			
+			Schedule schedule = dao.getCandidateScheduling(candidate.getIdCandidato());
+			
+			if(schedule != null) {
+				model.addAttribute("scheduledCandidate", true);
+				model.addAttribute(schedule);
 				
+				return "reagendamento";
+			} else {
 				return "agendamento";
-			} else{
-				return "redirect:/";
 			}
 		} else {
 			return "redirect:/";
@@ -54,10 +58,9 @@ public class AgendamentoController {
 	}
 
 	@RequestMapping(value ="/getTime/{date}", method=RequestMethod.GET)  
-	public @ResponseBody String getJsonTimes(@PathVariable String date, Model model){ 
-	    AgendamentoDAO dao = new JdbcAgendamentoDAO();
-	    dao.setUserLogin(username, password);
-	    
+	public @ResponseBody String getJsonTimes(@PathVariable String date, Model model){
+		dao.setUserLogin(username, password);
+		
 		List<Schedule> schedules = dao.getScheduleAvailable(date);
 		
 		JsonConverter converter = new JsonConverter();
@@ -70,8 +73,7 @@ public class AgendamentoController {
 	@RequestMapping(value ="/getVacancy/{date}/{hour}", method=RequestMethod.GET)  
 	public @ResponseBody String getVacancy(	Model model,
 											@PathVariable int date,
-											@PathVariable int hour){ 
-		AgendamentoDAO dao = new JdbcAgendamentoDAO();
+											@PathVariable int hour){
 		dao.setUserLogin(username, password);
 		
 		Schedule vacancy = dao.getVacancy(date, hour);
@@ -84,11 +86,8 @@ public class AgendamentoController {
 	public String schedule(Model model, HttpServletRequest request,
 										@RequestParam("idDay") int day,
 										@RequestParam("hour") int hour,
-										@RequestParam("candidate") int candidate) {
-		
+										@RequestParam("candidate") int candidate) {		
 		if(sessionController.checkSession(request)) {
-			System.out.println("AQUI");
-			AgendamentoDAO dao = new JdbcAgendamentoDAO();
 			dao.setUserLogin(username, password);
 			
 			Scheduling scheduling = new Scheduling(candidate, 1, day, hour);
@@ -108,9 +107,8 @@ public class AgendamentoController {
 															@PathVariable String field2,
 															@PathVariable String field3,
 															@PathVariable String digit){ 
-	    AgendamentoDAO dao = new JdbcAgendamentoDAO();
-	    dao.setUserLogin(username, password);
-	    
+		dao.setUserLogin(username, password);
+		
 	    String cpf = field1 + field2 + field3 + digit;
 	    
 	    List<Candidate> candidates = dao.findByCPF(cpf);
@@ -121,5 +119,31 @@ public class AgendamentoController {
 		}
 		return "CPF não cadastrado";
 
+	}
+	
+	@RequestMapping(value="/reagendamento", method=RequestMethod.POST)
+	public String reSchedule(HttpServletRequest request, Model model,
+														@RequestParam("idCandidate") int idCandidate,
+														@RequestParam("date") int date,
+														@RequestParam("time") int time,
+														@RequestParam("cpf") String cpf){
+		
+		if(sessionController.checkSession(request)) {
+			dao.setUserLogin(username, password);
+			
+			dao.unschedule(idCandidate, date, time);
+			
+			cpf = formatString.unformatCPF(cpf);
+			List<Candidate> candidates = dao.findByCPF(cpf);
+			
+			Candidate candidate = candidates.get(FIST_ELEMENT);
+			candidate.setCpf(formatString.formatCPF(cpf));
+			model.addAttribute(candidate);
+			
+			return "agendamento";
+		} else{
+			return "redirect:/";
+		}
+		
 	}
 }

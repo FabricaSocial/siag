@@ -1,4 +1,5 @@
-<div id="agendamento" class="small reveal-modal" data-reveal>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	<div id="agendamento" class="small reveal-modal" data-reveal>
 		<h3>Agendamento</h3><hr/>
 		<p>Digite o CPF do inscrito:</p>
 		
@@ -59,6 +60,7 @@
 					$('#agendar').removeAttr('disabled');
 				} else {
 					html = "<p>CPF não cadastrado ou Inválido</p>";
+					$('#agendar').attr('disabled', 'disabled');
 				}
 				
 				$('#validationResult').html(html);

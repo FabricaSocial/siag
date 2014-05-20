@@ -43,6 +43,8 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 				Candidate candidate = this.setCandidate(resultSet);
 				candidates.add(candidate);
 			}
+			
+			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,6 +85,8 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 				
 				schedules.add(schedule);
 			}
+			
+			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,6 +120,8 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 				
 				schedules.add(schedule);
 			}
+			
+			this.closeConnection(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -124,20 +130,111 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	}
 	
 	@Override
-	public boolean schedule(Scheduling scheduling){
-		Connection connection = this.getConnection(username, password);
-		
-		if(validateScheduling(connection, scheduling)) {
-			this.updateSchedule(connection, scheduling);
-			this.insertScheduling(connection, scheduling);
-	
+	public boolean schedule(Scheduling scheduling){	
+		if(validateScheduling(scheduling)) {
+			this.decreaseVacancies(scheduling);
+			this.insertScheduling(scheduling);
+
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	private void updateSchedule(Connection connection, Scheduling scheduling){
+	@Override
+	public Schedule getCandidateScheduling(int idCandidate) {
+		Connection connection = this.getConnection(username, password);
+		
+		String selectSQL = 	"SELECT d.data, h.horario, d.idDia, h.idHora FROM Agendamento AS ag " +
+							"INNER JOIN Dia AS d ON ag.idDia = d.idDia " +
+							"INNER JOIN Hora AS h ON ag.idHora = h.idHora " +
+							"INNER JOIN Candidato AS cand ON cand.idCandidato = ag.idCandidato " +
+							"WHERE cand.idCandidato =? ;";
+		
+		List<Schedule> schedules = new ArrayList<Schedule>();
+		try {
+			PreparedStatement statement = connection.prepareStatement(selectSQL);
+			statement.setInt(1, idCandidate);
+			
+			ResultSet resultSet = statement.executeQuery();
+			
+			while(resultSet.next()) {
+				Schedule schedule = new Schedule();
+				schedule.setDate(resultSet.getString(1));
+				schedule.setTime(resultSet.getString(2));
+				schedule.setIdDate(resultSet.getInt(3));
+				schedule.setIdTime(resultSet.getInt(4));
+				
+				schedules.add(schedule);
+			}
+			
+			this.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		Schedule schedule;
+		
+		if(schedules.size() > 0) {
+			schedule = schedules.get(FIRST_ELEMENT);
+		} else {
+			schedule = null;
+		}
+		
+		return schedule;
+	}
+	
+	@Override
+	public void unschedule(int idCandidate, int date, int time) {
+		this.increseVacancies(date, time);
+		this.cancelScheduling(date, time, idCandidate);
+	}
+	
+	private void increseVacancies(int date, int time) {
+		Connection connection = this.getConnection(username, password);
+		
+		String updateSQL = "UPDATE `siag`.`Dia_Hora` SET `vagas`=vagas+1 WHERE `idDia`=? and`idHora`=?;";
+		
+		PreparedStatement statement;
+		try {
+			statement = connection.prepareStatement(updateSQL);
+			statement.setInt(1, date);
+			statement.setInt(2, time);
+			
+			statement.executeUpdate();
+			
+			this.closeConnection(connection);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void cancelScheduling(int date, int time, int idCandidate) {
+		Connection connection = this.getConnection(username, password);
+		
+		String deleteSQL =	"DELETE FROM `siag`.`Agendamento` " +
+							"WHERE `idCandidato`=? AND `idDia`=? AND `idHora`=?;";
+		
+		PreparedStatement statement;
+		try {
+			statement = connection.prepareStatement(deleteSQL);
+			statement.setInt(1, idCandidate);
+			statement.setInt(2, date);
+			statement.setInt(3, time);
+			
+			statement.executeUpdate();
+			
+			this.closeConnection(connection);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void decreaseVacancies(Scheduling scheduling){
+		Connection connection = this.getConnection(username, password);
+		
 		String updateSQL = "UPDATE `siag`.`Dia_Hora` SET `vagas`=vagas-1 WHERE `idDia`=? and`idHora`=?;";
 		
 		PreparedStatement statement;
@@ -147,13 +244,17 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			statement.setInt(2, scheduling.getHour());
 			
 			statement.executeUpdate();
+			
+			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	private void insertScheduling(Connection connection, Scheduling scheduling) {
+	private void insertScheduling(Scheduling scheduling) {
+		Connection connection = this.getConnection(username, password);
+		
 		String insertSQL = 	"INSERT INTO `siag`.`Agendamento` " +
 							"(`idCandidato`, `idUsuario`, `idDia`, `idHora`) " +
 							"VALUES (?, ?, ?, ?);";
@@ -166,13 +267,17 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			statement.setInt(4, scheduling.getHour());
 			
 			statement.executeUpdate();
+			
+			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	private boolean validateScheduling(Connection connection, Scheduling scheduling) {
+	private boolean validateScheduling(Scheduling scheduling) {
+		Connection connection = this.getConnection(username, password);
+		
 		String selectSQL = 	"SELECT * FROM Dia_Hora WHERE idDia=? AND idHora=? AND vagas>0;";
 		
 		try {
@@ -182,6 +287,8 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			
 			ResultSet resultSet = statement.executeQuery();
 
+			this.closeConnection(connection);
+			
 			return resultSet.first();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

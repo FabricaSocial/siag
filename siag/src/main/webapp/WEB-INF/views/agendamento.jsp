@@ -71,8 +71,8 @@
 			<p></p>
 		</div>
 	</div>
-
-
-<jsp:include page="agendamento_jquery.jsp"></jsp:include>	
+	
+<jsp:include page="agendamento_modal.jsp"></jsp:include>
+<jsp:include page="agendamento_jquery.jsp"></jsp:include>
 <jsp:include page="agendamento_datepicker.jsp"></jsp:include>
 <jsp:include page="footer.jsp"></jsp:include>
