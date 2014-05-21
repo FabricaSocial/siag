@@ -8,7 +8,7 @@
 		<div class="large-8 medium-8 columns">
 			<div class="row">
 				<div class="large-6 medium-6 columns " >
-					<a class="button large expand radius" href="#">CADASTRO</a>
+					<a class="button large expand radius disabled" href="">CADASTRO</a>
 				</div>
 				
 				<div class="large-6 medium-6 columns">
@@ -18,7 +18,7 @@
 			
 			<div class="row">
 				<div class="large-6 medium-6 columns " >
-					<a class="button large expand radius" href="#">SORTEIOS</a>
+					<a class="button large expand radius disabled" href="">SORTEIOS</a>
 				</div>
 				
 				<div class="large-6 medium-6 columns">
