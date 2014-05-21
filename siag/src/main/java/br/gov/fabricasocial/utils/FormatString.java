@@ -8,11 +8,17 @@ public class FormatString {
 	}
 	
 	public String formatCPF(String cpf) {
-
-		String formattedCPF = 	(String) cpf.subSequence(0, 3) + "." +
-								cpf.subSequence(3, 6) + "." + cpf.subSequence(6, 9) +
-								"-" + cpf.subSequence(9, 11);
-
+		String formattedCPF;
+		
+		try{
+			cpf.subSequence(9, 11);
+		} catch (StringIndexOutOfBoundsException e) {
+			cpf = "0" + cpf;
+		} finally {
+			formattedCPF = 	(String) cpf.subSequence(0, 3) + "." +
+					cpf.subSequence(3, 6) + "." + cpf.subSequence(6, 9) +
+					"-" + cpf.subSequence(9, 11);
+		}
 		return formattedCPF;
 	}
 }

@@ -6,7 +6,6 @@ public class SchedulingReport {
 	private String User;
 	private String Date;
 	private String Hour;
-	private String SchedulingDate;
 	
 	public String getCandidate() {
 		return Candidate;
@@ -38,11 +37,4 @@ public class SchedulingReport {
 	public void setHour(String hour) {
 		Hour = hour;
 	}
-	public String getSchedulingDate() {
-		return SchedulingDate;
-	}
-	public void setSchedulingDate(String schedulingDate) {
-		SchedulingDate = schedulingDate;
-	}
-
 }

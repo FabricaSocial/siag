@@ -22,7 +22,7 @@
 				</div>
 				
 				<div class="large-6 medium-6 columns">
-					<a class="button large expand radius" href="#">RELATÓRIOS</a>
+					<a class="button large expand radius" href="/fabricasocial/relatorios">RELATÓRIOS</a>
 				</div>
 			</div>
 			
