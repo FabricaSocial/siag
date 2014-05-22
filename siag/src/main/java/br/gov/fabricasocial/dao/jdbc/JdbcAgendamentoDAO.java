@@ -8,12 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.fabricasocial.dao.AgendamentoDAO;
+import br.gov.fabricasocial.dao.AuditoriaDAO;
 import br.gov.fabricasocial.models.Candidate;
 import br.gov.fabricasocial.models.Schedule;
 import br.gov.fabricasocial.models.Scheduling;
 
 public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
+	AuditoriaDAO auditoriaDAO = new JdbcAuditoriaDAO();
+	
 	private static final int FIRST_ELEMENT = 0;
+	private static final int INSERT = 1;
+	private static final int DELETE = 2;
+	
 	private String username;
 	private String password;
 	
@@ -44,6 +50,8 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 				candidates.add(candidate);
 			}
 			
+			resultSet.close();
+			statement.close();
 			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -86,6 +94,8 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 				schedules.add(schedule);
 			}
 			
+			resultSet.close();
+			statement.close();
 			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -121,6 +131,8 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 				schedules.add(schedule);
 			}
 			
+			resultSet.close();
+			statement.close();
 			this.closeConnection(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -130,10 +142,12 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	}
 	
 	@Override
-	public boolean schedule(Scheduling scheduling){	
+	public boolean schedule(Scheduling scheduling, int userId){	
 		if(validateScheduling(scheduling)) {
 			this.decreaseVacancies(scheduling);
 			this.insertScheduling(scheduling);
+		
+			auditoriaDAO.scheduling(scheduling.getCandidate(), userId, INSERT);
 
 			return true;
 		} else {
@@ -168,6 +182,8 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 				schedules.add(schedule);
 			}
 			
+			resultSet.close();
+			statement.close();
 			this.closeConnection(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -185,9 +201,11 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	}
 	
 	@Override
-	public void unschedule(int idCandidate, int date, int time) {
+	public void unschedule(Candidate candidate, int date, int time, int userId) {
 		this.increseVacancies(date, time);
-		this.cancelScheduling(date, time, idCandidate);
+		this.cancelScheduling(date, time, candidate.getIdCandidato());
+		
+		auditoriaDAO.scheduling(candidate.getIdCandidato(), userId, DELETE);
 	}
 	
 	private void increseVacancies(int date, int time) {
@@ -203,6 +221,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			
 			statement.executeUpdate();
 			
+			statement.close();
 			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -225,6 +244,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			
 			statement.executeUpdate();
 			
+			statement.close();
 			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -245,6 +265,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			
 			statement.executeUpdate();
 			
+			statement.close();
 			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -268,6 +289,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			
 			statement.executeUpdate();
 			
+			statement.close();
 			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -286,10 +308,13 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			statement.setInt(2, scheduling.getHour());
 			
 			ResultSet resultSet = statement.executeQuery();
-
+			boolean validate = resultSet.first();
+			
+			resultSet.close();
+			statement.close();
 			this.closeConnection(connection);
 			
-			return resultSet.first();
+			return validate;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

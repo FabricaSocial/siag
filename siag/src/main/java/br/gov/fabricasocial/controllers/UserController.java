@@ -65,8 +65,8 @@ public class UserController {
 		
 		return "login";
 		*/
-		
-		User user = new User("matheus.fernandes", "81614391");
+		List<User> users = dao.findByUserName("matheus.fernandes");
+		User user = users.get(FIRST_ELEMENT);
 		sessionController.startSession(request, user);
 		return "home";
 	}

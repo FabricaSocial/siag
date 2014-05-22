@@ -37,8 +37,8 @@ public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 				statement.setString(2, user.getPassword());
 				
 				statement.execute();
-				statement.close();
 				
+				statement.close();
 				this.closeConnection(connection);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

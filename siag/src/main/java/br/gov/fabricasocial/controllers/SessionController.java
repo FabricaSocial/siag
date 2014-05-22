@@ -11,7 +11,8 @@ public class SessionController {
 		boolean create = true;
 		HttpSession session = request.getSession(create);
 		
-		session.setAttribute("loggedUser", user.getUsername());		
+		session.setAttribute("loggedUser", user.getUsername());
+		session.setAttribute("loggedUserId", user.getIdUser());
 	}
 
 	public void finishSession(HttpServletRequest request) {
@@ -36,5 +37,12 @@ public class SessionController {
 		String loggedUser = (String) session.getAttribute("loggedUser");
 		
 		return loggedUser;
+	}
+	
+	public int getLoggedUserId(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		int loggedUserId = (Integer) session.getAttribute("loggedUserId");
+		
+		return loggedUserId;
 	}
 }

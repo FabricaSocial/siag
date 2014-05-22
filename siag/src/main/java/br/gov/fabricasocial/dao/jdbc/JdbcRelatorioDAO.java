@@ -32,6 +32,8 @@ public class JdbcRelatorioDAO extends JdbcBaseDAO implements RelatorioDAO{
 			
 			schedulingReports = setSchedulingReports(resultSet, schedulingReports);
 			
+			resultSet.close();
+			statement.close();
 			this.closeConnection(connection);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

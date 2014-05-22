@@ -91,8 +91,9 @@ public class AgendamentoController {
 			dao.setUserLogin(username, password);
 			
 			Scheduling scheduling = new Scheduling(candidate, 1, day, hour);
-
-			if(dao.schedule(scheduling)) {
+			
+			int userId = sessionController.getLoggedUserId(request);
+			if(dao.schedule(scheduling, userId)) {
 				return "agendamento_sucesso";
 			} else {
 				return "erro";
@@ -129,9 +130,7 @@ public class AgendamentoController {
 														@RequestParam("cpf") String cpf){
 		
 		if(sessionController.checkSession(request)) {
-			dao.setUserLogin(username, password);
-			
-			dao.unschedule(idCandidate, date, time);
+			int userId = sessionController.getLoggedUserId(request);
 			
 			cpf = formatString.unformatCPF(cpf);
 			List<Candidate> candidates = dao.findByCPF(cpf);
@@ -139,6 +138,9 @@ public class AgendamentoController {
 			Candidate candidate = candidates.get(FIST_ELEMENT);
 			candidate.setCpf(formatString.formatCPF(cpf));
 			model.addAttribute(candidate);
+			
+			dao.setUserLogin(username, password);
+			dao.unschedule(candidate, date, time, userId);
 			
 			return "agendamento";
 		} else{
