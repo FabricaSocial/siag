@@ -5,6 +5,6 @@ import java.util.List;
 import br.gov.fabricasocial.models.SchedulingReport;
 
 public interface RelatorioDAO {
-	public List<SchedulingReport> schedulingReport();
-
+	public List<String> schedulingDays();
+	public List<SchedulingReport> schedulingTimes();
 }

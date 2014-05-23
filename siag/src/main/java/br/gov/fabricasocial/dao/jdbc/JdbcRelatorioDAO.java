@@ -9,63 +9,96 @@ import java.util.List;
 
 import br.gov.fabricasocial.dao.RelatorioDAO;
 import br.gov.fabricasocial.models.SchedulingReport;
-import br.gov.fabricasocial.utils.FormatString;
 
 public class JdbcRelatorioDAO extends JdbcBaseDAO implements RelatorioDAO{
 	private static final String username = "Cadastro";
 	private static final String password = "cadastro";
-	
-	FormatString formatString = new FormatString();
-	
+
 	@Override
-	public List<SchedulingReport> schedulingReport() {
-		Connection connection = this.getConnection(username, password);
+	public List<String> schedulingDays() {
+		Connection connection= this.getConnection(username, password);
 		
-		String selectSQL =	"SELECT * FROM siag.RelatorioAgendamento;";
+		String selectDatesSQL = "SELECT `data` FROM Dia ORDER BY idDia;";
 		
-		List<SchedulingReport> schedulingReports = new ArrayList<SchedulingReport>();
+		List<String> days = new ArrayList<String>();
 		
 		try {
-			PreparedStatement statement = connection.prepareStatement(selectSQL);
-
+			PreparedStatement statement = connection.prepareStatement(selectDatesSQL);
 			ResultSet resultSet = statement.executeQuery();
 			
-			schedulingReports = setSchedulingReports(resultSet, schedulingReports);
+			while(resultSet.next()){
+				days.add(resultSet.getString(1));
+			}
 			
 			resultSet.close();
-			statement.close();
-			this.closeConnection(connection);
+			connection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return schedulingReports;
+
+		return days;
 	}
 
-	private List<SchedulingReport> setSchedulingReports(ResultSet resultSet,
-			List<SchedulingReport> schedulingReports) {
+	@Override
+	public List<SchedulingReport> schedulingTimes() {
+		Connection connection= this.getConnection(username, password);
+		
+		String selectTimesSQL = "SELECT idHora, horario FROM Hora ORDER BY idHora;";
+		
+		List<SchedulingReport> report = new ArrayList<SchedulingReport>();
+		
 		try {
-			while(resultSet.next()) {
+			PreparedStatement statement = connection.prepareStatement(selectTimesSQL);
+			ResultSet resultSet = statement.executeQuery();
+			
+			while(resultSet.next()){
 				SchedulingReport schedulingReport = new SchedulingReport();
+				schedulingReport.setTime(resultSet.getString(2));
 				
-				schedulingReport.setCandidate(resultSet.getString(1));
-				schedulingReport.setCandidateCpf(resultSet.getString(2));
-				schedulingReport.setUser(resultSet.getString(3));
-				schedulingReport.setDate(resultSet.getString(4));
-				schedulingReport.setHour(resultSet.getString(5));
+				int idTime = resultSet.getInt(1);
 				
-				System.out.println(schedulingReport.getCandidateCpf());
+				schedulingReport.setVacancies(this.getVacancies(idTime));
 				
-				schedulingReport.setCandidateCpf(formatString.formatCPF(schedulingReport.getCandidateCpf()));
-				
-				schedulingReports.add(schedulingReport);
+				report.add(schedulingReport);
 			}
+			
+			resultSet.close();
+			connection.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return report;
+	}
+	
+	private List<Integer> getVacancies(int idTime) {
+		Connection connection = this.getConnection(username, password);
+		
+		String selectVacanciesSQL = "SELECT SUM(20 - vagas) AS Agendamentos " +
+									"FROM Dia_Hora " +
+									"WHERE idHora=? " +
+									"GROUP BY idDia, idHora " +
+									"ORDER BY idDia, idHora;";
+		
+		List<Integer> vacancies = new ArrayList<Integer>();
+		
+		try {
+			PreparedStatement statement = connection.prepareStatement(selectVacanciesSQL);
+			statement.setInt(1, idTime);
+			
+			ResultSet resultSet = statement.executeQuery();
+			
+			while(resultSet.next()){
+				vacancies.add(resultSet.getInt(1));
+			}
+			
+			resultSet.close();
+			connection.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return schedulingReports;
+		return vacancies;
 	}
 
 }

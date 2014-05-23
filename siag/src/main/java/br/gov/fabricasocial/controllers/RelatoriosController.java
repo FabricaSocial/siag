@@ -12,19 +12,15 @@ import br.gov.fabricasocial.models.SchedulingReport;
 
 @Controller
 public class RelatoriosController {
+	RelatorioDAO dao = new JdbcRelatorioDAO();
 	
 	@RequestMapping(value="/relatorios")
 	public String schedulingReport(Model model) {
-		RelatorioDAO dao = new JdbcRelatorioDAO();
+		List<String> dates = dao.schedulingDays();
+		List<SchedulingReport> schedulingReports = dao.schedulingTimes();
 		
-		List<SchedulingReport> schedulingReports = dao.schedulingReport();
-		
-		for(SchedulingReport report : schedulingReports){
-			System.out.println(report.getCandidate());
-		}
-		
+		model.addAttribute("dates", dates);
 		model.addAttribute("schedulingReports", schedulingReports);
-		
 		
 		return "relatorios";
 	}

@@ -7,6 +7,13 @@
 			<hr/>
 		</div>
 	</div>
+	
+	<div class="row">
+		<ul class="breadcrumbs">
+			<li><a href="/fabricasocial/">Home</a></li>
+			<li class="current">Agendamento</li>
+		</ul>
+	</div>
 
 	<div class="row" data-equalizer>
 		<div class="large-1 medium-1 columns">
@@ -52,7 +59,7 @@
 		<div class="row" >
 	  		<div class="large-4 medium-4 columns"><p></p></div>
 	  		<div class="large-4 medium-4 columns">
-	  			<button id="agendar" class="postfix radius">Agendar</button>
+	  			<button id="agendar" class="postfix radius" disabled>Agendar</button>
 	  		</div>
 	  		<div class="large-4 medium-4 columns"><p></p></div>
 	  	</div>

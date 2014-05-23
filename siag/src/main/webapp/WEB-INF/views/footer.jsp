@@ -2,6 +2,9 @@
 	
 	<script src="resources/js/vendor/jquery.js"></script>
     <script src="resources/js/foundation.min.js"></script>
+    
+    <script src="resources/highcharts/js/highcharts.js"></script>
+	<script src="resources/highcharts/js/modules/exporting.js"></script>
     <script>
       $(document).foundation();
     </script>

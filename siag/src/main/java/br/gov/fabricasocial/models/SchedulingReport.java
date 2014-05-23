@@ -1,40 +1,21 @@
 package br.gov.fabricasocial.models;
 
+import java.util.List;
+
 public class SchedulingReport {
-	private String Candidate;
-	private String CandidateCpf;
-	private String User;
-	private String Date;
-	private String Hour;
+	private String Time;
+	private List<Integer> vacancies;
 	
-	public String getCandidate() {
-		return Candidate;
+	public String getTime() {
+		return Time;
 	}
-	public void setCandidate(String candidate) {
-		Candidate = candidate;
+	public void setTime(String time) {
+		Time = time;
 	}
-	public String getCandidateCpf() {
-		return CandidateCpf;
+	public List<Integer> getVacancies() {
+		return vacancies;
 	}
-	public void setCandidateCpf(String candidateCpf) {
-		CandidateCpf = candidateCpf;
-	}
-	public String getUser() {
-		return User;
-	}
-	public void setUser(String user) {
-		User = user;
-	}
-	public String getDate() {
-		return Date;
-	}
-	public void setDate(String date) {
-		Date = date;
-	}
-	public String getHour() {
-		return Hour;
-	}
-	public void setHour(String hour) {
-		Hour = hour;
+	public void setVacancies(List<Integer> vacancies) {
+		this.vacancies = vacancies;
 	}
 }
