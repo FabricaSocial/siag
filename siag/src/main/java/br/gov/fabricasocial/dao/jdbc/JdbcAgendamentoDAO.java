@@ -20,12 +20,9 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	private static final int INSERT = 1;
 	private static final int DELETE = 2;
 	
-	private String username;
-	private String password;
-	
 	@Override
 	public List<Candidate> findByCPF(String cpf) {		
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String selectSQL =	"SELECT cand.idCandidato, cand.cpf, cand.nome, cand.dataInscricao," +
 							"cid.Nome, prog.descricao, nec.descricao, tdef.descricao " +
@@ -61,16 +58,10 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 				
 		return candidates;
 	}
-
-	@Override
-	public void setUserLogin(String username, String password) {
-		this.username = username;
-		this.password = password;		
-	}
-
+	
 	@Override
 	public List<Schedule> getScheduleAvailable(String date) {
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String selectSQL = 	"SELECT dh.idDia, d.data, dh.idHora, h.horario, dh.vagas " + 
 							"FROM Dia_Hora AS dh " +
@@ -108,7 +99,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	
 	@Override
 	public Schedule getVacancy(int date, int hour) {
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String selectSQL = "SELECT idDia, idHora, vagas FROM siag.Dia_Hora WHERE idDia=? AND idHora=?;";
 		
@@ -157,7 +148,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	
 	@Override
 	public Schedule getCandidateScheduling(int idCandidate) {
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String selectSQL = 	"SELECT d.data, h.horario, d.idDia, h.idHora FROM Agendamento AS ag " +
 							"INNER JOIN Dia AS d ON ag.idDia = d.idDia " +
@@ -209,7 +200,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	}
 	
 	private void increseVacancies(int date, int time) {
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String updateSQL = "UPDATE `siag`.`Dia_Hora` SET `vagas`=vagas+1 WHERE `idDia`=? and`idHora`=?;";
 		
@@ -230,7 +221,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	}
 	
 	private void cancelScheduling(int date, int time, int idCandidate) {
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String deleteSQL =	"DELETE FROM `siag`.`Agendamento` " +
 							"WHERE `idCandidato`=? AND `idDia`=? AND `idHora`=?;";
@@ -253,7 +244,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	}
 	
 	private void decreaseVacancies(Scheduling scheduling){
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String updateSQL = "UPDATE `siag`.`Dia_Hora` SET `vagas`=vagas-1 WHERE `idDia`=? and`idHora`=?;";
 		
@@ -274,7 +265,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	}
 	
 	private void insertScheduling(Scheduling scheduling) {
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String insertSQL = 	"INSERT INTO `siag`.`Agendamento` " +
 							"(`idCandidato`, `idUsuario`, `idDia`, `idHora`) " +
@@ -298,7 +289,7 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	}
 	
 	private boolean validateScheduling(Scheduling scheduling) {
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String selectSQL = 	"SELECT * FROM Dia_Hora WHERE idDia=? AND idHora=? AND vagas>0;";
 		

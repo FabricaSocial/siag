@@ -6,11 +6,11 @@ import java.sql.SQLException;
 
 public class JdbcBaseDAO {
 	
-	public Connection getConnection(String username, String password) {
+	public Connection getConnection() {
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			Connection newConnection = DriverManager.getConnection("jdbc:mysql://localhost/siag",
-																	username, password);
+																	"root", "root");
 			return newConnection;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

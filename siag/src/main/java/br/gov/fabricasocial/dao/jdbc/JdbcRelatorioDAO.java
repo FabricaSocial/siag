@@ -11,12 +11,9 @@ import br.gov.fabricasocial.dao.RelatorioDAO;
 import br.gov.fabricasocial.models.SchedulingReport;
 
 public class JdbcRelatorioDAO extends JdbcBaseDAO implements RelatorioDAO{
-	private static final String username = "Cadastro";
-	private static final String password = "cadastro";
-
 	@Override
 	public List<String> schedulingDays() {
-		Connection connection= this.getConnection(username, password);
+		Connection connection= this.getConnection();
 		
 		String selectDatesSQL = "SELECT `data` FROM Dia ORDER BY idDia;";
 		
@@ -41,7 +38,7 @@ public class JdbcRelatorioDAO extends JdbcBaseDAO implements RelatorioDAO{
 
 	@Override
 	public List<SchedulingReport> schedulingTimes() {
-		Connection connection= this.getConnection(username, password);
+		Connection connection= this.getConnection();
 		
 		String selectTimesSQL = "SELECT idHora, horario FROM Hora ORDER BY idHora;";
 		
@@ -72,7 +69,7 @@ public class JdbcRelatorioDAO extends JdbcBaseDAO implements RelatorioDAO{
 	}
 	
 	private List<Integer> getVacancies(int idTime) {
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 		
 		String selectVacanciesSQL = "SELECT SUM(20 - vagas) AS Agendamentos " +
 									"FROM Dia_Hora " +

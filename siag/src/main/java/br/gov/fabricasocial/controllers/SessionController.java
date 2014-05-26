@@ -23,7 +23,12 @@ public class SessionController {
 	public boolean checkSession(HttpServletRequest request) {
 		boolean check = false;
 		HttpSession session = request.getSession(check);
-		String loggedUser = (String) session.getAttribute("loggedUser");
+		String loggedUser = "";
+		try{
+			loggedUser = (String) session.getAttribute("loggedUser");
+		} catch (NullPointerException e) {
+			loggedUser = null;
+		}
 
 		if(loggedUser != null){
 			return true;

@@ -27,13 +27,10 @@ public class AgendamentoController {
 	AgendamentoDAO dao = new JdbcAgendamentoDAO();
 	
 	private static final int FIST_ELEMENT = 0;
-	private static String username = "Cadastro";
-	private static String password = "cadastro";
 
 	@RequestMapping(value = "/agendamento", method = RequestMethod.POST)
 	public String scheduling(HttpServletRequest request, Model model, @RequestParam("cpf") String cpf) {
 		if(sessionController.checkSession(request)) {
-			dao.setUserLogin(username, password);
 			
 			cpf = formatString.unformatCPF(cpf);
 			List<Candidate> candidates = dao.findByCPF(cpf);
@@ -59,7 +56,6 @@ public class AgendamentoController {
 
 	@RequestMapping(value ="/getTime/{date}", method=RequestMethod.GET)  
 	public @ResponseBody String getJsonTimes(@PathVariable String date, Model model){
-		dao.setUserLogin(username, password);
 		
 		List<Schedule> schedules = dao.getScheduleAvailable(date);
 		
@@ -74,7 +70,6 @@ public class AgendamentoController {
 	public @ResponseBody String getVacancy(	Model model,
 											@PathVariable int date,
 											@PathVariable int hour){
-		dao.setUserLogin(username, password);
 		
 		Schedule vacancy = dao.getVacancy(date, hour);
 		String vacancyAvailable = Integer.toString(vacancy.getVacancy());
@@ -88,7 +83,6 @@ public class AgendamentoController {
 										@RequestParam("hour") int hour,
 										@RequestParam("candidate") int candidate) {		
 		if(sessionController.checkSession(request)) {
-			dao.setUserLogin(username, password);
 			
 			Scheduling scheduling = new Scheduling(candidate, 1, day, hour);
 			
@@ -108,7 +102,6 @@ public class AgendamentoController {
 															@PathVariable String field2,
 															@PathVariable String field3,
 															@PathVariable String digit){ 
-		dao.setUserLogin(username, password);
 		
 	    String cpf = field1 + field2 + field3 + digit;
 	    
@@ -139,7 +132,6 @@ public class AgendamentoController {
 			candidate.setCpf(formatString.formatCPF(cpf));
 			model.addAttribute(candidate);
 			
-			dao.setUserLogin(username, password);
 			dao.unschedule(candidate, date, time, userId);
 			
 			return "agendamento";

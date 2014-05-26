@@ -32,7 +32,11 @@
 		</div>
 	</div>
 	
-	${cpfNaoCadastrado}
+	<div id="updatePassword" class="small reveal-modal" data-reveal>
+		<h2>Alterar Senha</h2><hr/>
+		<p>Senha alterada com sucesso!</p>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
 
 <jsp:include page="agendamento_modal.jsp"></jsp:include>
 <jsp:include page="footer.jsp"></jsp:include>

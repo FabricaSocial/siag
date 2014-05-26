@@ -11,5 +11,22 @@
     <script>
 			$('#errorModal').foundation('reveal', 'open');
 	</script>
+	<c:if test="${invalidAuth == true}">
+		<script>
+			$('#invalidAuth').foundation('reveal', 'open');
+		</script>
+	</c:if>
+	
+	<c:if test="${unregistredUser == true}">
+		<script>
+			$('#unregistredUser').foundation('reveal', 'open');
+		</script>
+	</c:if>
+	
+	<c:if test="${updatePassword == true}">
+		<script>
+			$('#updatePassword').foundation('reveal', 'open');
+		</script>
+	</c:if>
   </body>
 </html>

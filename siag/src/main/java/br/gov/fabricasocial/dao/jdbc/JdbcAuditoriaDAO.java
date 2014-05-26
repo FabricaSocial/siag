@@ -7,16 +7,14 @@ import java.sql.SQLException;
 import br.gov.fabricasocial.dao.AuditoriaDAO;
 
 public class JdbcAuditoriaDAO extends JdbcBaseDAO implements AuditoriaDAO {
-	private static final String username = "Cadastro";
-	private static final String password = "cadastro";
-	
+
 	@Override
 	public void scheduling(int candidate, int userId, int auditStatus) {
 		System.out.println("------" + candidate);
 		System.out.println(userId);
 		System.out.println(auditStatus);
 		
-		Connection connection = this.getConnection(username, password);
+		Connection connection = this.getConnection();
 
 		String insertSQL =	"INSERT INTO `siag`.`AgendamentoAudit` " +
 				"(`idCandidato`, `idUsuario`, `idStatusAudit`) " +
