@@ -20,6 +20,12 @@ import br.gov.fabricasocial.models.Scheduling;
 import br.gov.fabricasocial.utils.FormatString;
 import br.gov.fabricasocial.utils.JsonConverter;
 
+/**
+ * Controla o modulo de agendamento.
+ * 
+ * @author DETI - Departamento de Tecnologia de Informacao
+ */
+
 @Controller
 public class AgendamentoController {
 	private SessionController sessionController = new SessionController();
@@ -28,6 +34,11 @@ public class AgendamentoController {
 	
 	private static final int FIST_ELEMENT = 0;
 
+	/**
+	 * Metodo que verifica se o candidato ja possui um agendamento e redireciona para a pagina correta.
+	 * @param cpf CPF do candidato
+	 * @return Pagina de agendamento, reagendamento ou redireciona para tela de login
+	 */
 	@RequestMapping(value = "/agendamento", method = RequestMethod.POST)
 	public String scheduling(HttpServletRequest request, Model model, @RequestParam("cpf") String cpf) {
 		if(sessionController.checkSession(request)) {
@@ -54,8 +65,13 @@ public class AgendamentoController {
 		}
 	}
 
+	/**
+	 * (AJAX) Obtem os horarios disponiveis para o dia selecionado.
+	 * @param date Data selecionada
+	 * @return JSON com os horarios disponiveis
+	 */
 	@RequestMapping(value ="/getTime/{date}", method=RequestMethod.GET)  
-	public @ResponseBody String getJsonTimes(@PathVariable String date, Model model){
+	public @ResponseBody String getJsonTimes(@PathVariable String date){
 		
 		List<Schedule> schedules = dao.getScheduleAvailable(date);
 		
@@ -66,9 +82,14 @@ public class AgendamentoController {
 		return json;
 	}
 	
+	/**
+	 * (AJAX) Obtem a quantidade de vagas disponiveis para o horario selecionado
+	 * @param date ID do dia selecionado
+	 * @param hour ID do horario selecionado
+	 * @return Quantidade de vagas em formato de String
+	 */
 	@RequestMapping(value ="/getVacancy/{date}/{hour}", method=RequestMethod.GET)  
-	public @ResponseBody String getVacancy(	Model model,
-											@PathVariable int date,
+	public @ResponseBody String getVacancy(	@PathVariable int date,
 											@PathVariable int hour){
 		
 		Schedule vacancy = dao.getVacancy(date, hour);
@@ -77,11 +98,19 @@ public class AgendamentoController {
 		return vacancyAvailable;
 	}
 	
+	
+	/**
+	 * Realiza o agendamento
+	 * @param day ID do dia selecionado
+	 * @param hour ID do horario selecionado
+	 * @param candidate ID do candidato
+	 * @return Pagina de Sucesso, Erro ou redirecionamento para tela de login
+	 */
 	@RequestMapping(value="/agendar", method=RequestMethod.POST)
-	public String schedule(Model model, HttpServletRequest request,
-										@RequestParam("idDay") int day,
-										@RequestParam("hour") int hour,
-										@RequestParam("candidate") int candidate) {		
+	public String schedule(HttpServletRequest request,
+							@RequestParam("idDay") int day,
+							@RequestParam("hour") int hour,
+							@RequestParam("candidate") int candidate) {		
 		if(sessionController.checkSession(request)) {
 			
 			Scheduling scheduling = new Scheduling(candidate, 1, day, hour);
@@ -97,11 +126,19 @@ public class AgendamentoController {
 		}
 	}
 	
+	/**
+	 * Verifica se o CPF informado foi sorteado
+	 * @param field1 3 primeiros digitos do CPF
+	 * @param field2 3 segundos digitos do CPF
+	 * @param field3 3 ultimos digitos do CPF
+	 * @param digit Digitos verificadores do CPF
+	 * @return Nome do Candidato ou mensagem informando CPF inexistente
+	 */
 	@RequestMapping(value ="/cpfValidate/{field1}.{field2}.{field3}-{digit}", method=RequestMethod.GET)  
-	public @ResponseBody String cpfValidate(Model model, 	@PathVariable String field1,
-															@PathVariable String field2,
-															@PathVariable String field3,
-															@PathVariable String digit){ 
+	public @ResponseBody String cpfValidate(@PathVariable String field1,
+											@PathVariable String field2,
+											@PathVariable String field3,
+											@PathVariable String digit){ 
 		
 	    String cpf = field1 + field2 + field3 + digit;
 	    
@@ -115,6 +152,14 @@ public class AgendamentoController {
 
 	}
 	
+	/**
+	 * Cancela o agendamento atual do candidato e realiza o reagendamento
+	 * @param idCandidate ID do candidato
+	 * @param date ID do dia que o candidato estava agendado
+	 * @param time ID do horario que o candidato estava agendado
+	 * @param cpf CPF do candidato
+	 * @return Pagina de agendamento ou redireciona para tela de login
+	 */
 	@RequestMapping(value="/reagendamento", method=RequestMethod.POST)
 	public String reSchedule(HttpServletRequest request, Model model,
 														@RequestParam("idCandidate") int idCandidate,

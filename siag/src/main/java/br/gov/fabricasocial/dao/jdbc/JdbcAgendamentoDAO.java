@@ -13,6 +13,11 @@ import br.gov.fabricasocial.models.Candidate;
 import br.gov.fabricasocial.models.Schedule;
 import br.gov.fabricasocial.models.Scheduling;
 
+/**
+ * Objeto de Acesso ao Banco de Dados, com referencia aos Agendamentos
+ * @author DETI - Departamento de Tecnologia de Informacao
+ *
+ */
 public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 	AuditoriaDAO auditoriaDAO = new JdbcAuditoriaDAO();
 	
