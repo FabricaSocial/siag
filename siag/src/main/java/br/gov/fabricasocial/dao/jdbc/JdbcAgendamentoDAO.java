@@ -203,7 +203,11 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 		
 		auditoriaDAO.scheduling(candidate.getIdCandidato(), userId, DELETE);
 	}
-	
+	/**
+	 * Realiza a update de vagas do dia atraves da data e da hora, assim aumentando o numero de vagas disponiveis naquela data e naquela hora.
+	 * @param date referencia o id da data no banco
+	 * @param time referencia o id da hora no banco
+	 */
 	private void increseVacancies(int date, int time) {
 		Connection connection = this.getConnection();
 		
@@ -224,7 +228,12 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Realiza a busca pelos os id para realiza a exclusão do agendamento
+	 * @param date - referencia o ID da data no banco de dados.
+	 * @param time - referencia o ID da hora no banco de dados.
+	 * @param idCandidate - referencia o ID do candidato no banco de dados.
+	 */
 	private void cancelScheduling(int date, int time, int idCandidate) {
 		Connection connection = this.getConnection();
 		
@@ -247,7 +256,10 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Realiza a update de vagas do dia atraves da data e da hora, assim diminuindo agendamentos disponiveis naquela data e naquela hora.
+	 * @param scheduling informacoes do agendamento.
+	 */
 	private void decreaseVacancies(Scheduling scheduling){
 		Connection connection = this.getConnection();
 		
@@ -268,7 +280,10 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Realiza a insercao do agendamento do candidato.
+	 * @param scheduling informcoes do agendamento.
+	 */
 	private void insertScheduling(Scheduling scheduling) {
 		Connection connection = this.getConnection();
 		
@@ -323,7 +338,12 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 			return true;	
 		}
 	}
-	
+	/**
+	 * busca no banco a a data os horarios que tem vaga disponivel
+	 * @param resultSet mostra as horarios disponiveis na data desejada
+	 * @return a data com os horarios disponiveis.
+	 * @throws SQLException recebe os dados da data, hora e da vagas.
+	 */
 	private Schedule setSchedule(ResultSet resultSet) throws SQLException {
 		Schedule schedule = new Schedule();
 		schedule.setIdDate(resultSet.getInt(1));
@@ -334,7 +354,12 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 		
 		return schedule;
 	}
-	
+	/**
+	 * buscar o candidato para verificar se ele esta com seu cadastro todo completo para esta realizado o agendamento
+	 * @param resultSet todas as informacoes dos candidato
+	 * @return todas as informacoes cadastrada no banco do candidato
+	 * @throws SQLException recebe as informacoes do candidato
+	 */
 	private Candidate setCandidate(ResultSet resultSet) throws SQLException {
 		Candidate candidate = new Candidate();
 		candidate.setIdCandidato(resultSet.getInt(1));

@@ -9,7 +9,11 @@ import java.util.List;
 
 import br.gov.fabricasocial.dao.RelatorioDAO;
 import br.gov.fabricasocial.models.SchedulingReport;
-
+/**
+ * Responsavel pela os relatorios do agendamento
+ * @author DETI - Departamento de Tecnologia de Informacao
+ *
+ */
 public class JdbcRelatorioDAO extends JdbcBaseDAO implements RelatorioDAO{
 	@Override
 	public List<String> schedulingDays() {
@@ -67,7 +71,11 @@ public class JdbcRelatorioDAO extends JdbcBaseDAO implements RelatorioDAO{
 
 		return report;
 	}
-	
+	/**
+	 * Realiza a busca pela hora verificando se no dia e na hora desejada tem vaga
+	 * @param IdTime referencia o id da hora no banco
+	 * @return Vai retorna todos horarios preenchidos e vagos.
+	 */
 	private List<Integer> getVacancies(int idTime) {
 		Connection connection = this.getConnection();
 		

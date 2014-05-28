@@ -5,7 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import br.gov.fabricasocial.dao.AuditoriaDAO;
-
+/**
+ * Objeto de Acesso ao Banco de Dados, com referencia a auditoria
+ * @author DETI - Departamento de Tecnologia de Informacao
+ *
+ */
 public class JdbcAuditoriaDAO extends JdbcBaseDAO implements AuditoriaDAO {
 
 	@Override

@@ -9,7 +9,11 @@ import java.util.List;
 
 import br.gov.fabricasocial.dao.LoginDAO;
 import br.gov.fabricasocial.models.User;
-
+/**
+ * Responsavel pelo o login do usuario cadastro no sistema
+ * @author DETI - Departamento de Tecnologia de Informacao
+ *
+ */
 public class JdbcLoginDAO extends JdbcBaseDAO implements LoginDAO{
 	
 	@Override

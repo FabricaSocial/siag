@@ -10,6 +10,11 @@ import br.gov.fabricasocial.models.SchedulingReport;
  *
  */
 public interface RelatorioDAO {
+	/**
+	 * Sera realizado a busca da data
+	 * @return lista de string com as datas disponiveis
+	 */
 	public List<String> schedulingDays();
+	
 	public List<SchedulingReport> schedulingTimes();
 }
