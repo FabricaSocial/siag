@@ -1,0 +1,6 @@
+br.gov.fabricasocial.controllers
+br.gov.fabricasocial.dao
+br.gov.fabricasocial.dao.jdbc
+br.gov.fabricasocial.dao.ldap
+br.gov.fabricasocial.models
+br.gov.fabricasocial.utils

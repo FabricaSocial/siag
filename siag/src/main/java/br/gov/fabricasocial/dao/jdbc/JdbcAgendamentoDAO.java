@@ -293,6 +293,11 @@ public class JdbcAgendamentoDAO extends JdbcBaseDAO implements AgendamentoDAO {
 		}
 	}
 	
+	/**
+	 * Valida a criacao de agendamento
+	 * @param scheduling Objeto com dados do agendamento
+	 * @return True se horario estiver disponivel e false caso contrario
+	 */
 	private boolean validateScheduling(Scheduling scheduling) {
 		Connection connection = this.getConnection();
 		
